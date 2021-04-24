@@ -5,5 +5,5 @@ func _ready() -> void:
 
 func play():
 	visible = false
-	var game = preload("res://scenes/game.tscn").instance()
+	var game = load("res://scenes/game.tscn").instance()
 	get_tree().get_root().add_child(game)
