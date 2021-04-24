@@ -8,14 +8,8 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "Reference",
-"class": "Boid",
-"language": "GDScript",
-"path": "res://scripts/boid.gd"
-} ]
+_global_script_classes=[  ]
 _global_script_class_icons={
-"Boid": ""
 }
 
 [application]
@@ -23,6 +17,19 @@ _global_script_class_icons={
 config/name="ld-48"
 run/main_scene="res://scenes/main.tscn"
 config/icon="res://sprites/icon.png"
+
+[input]
+
+zoom_in={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+zoom_out={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
 
 [physics]
 
