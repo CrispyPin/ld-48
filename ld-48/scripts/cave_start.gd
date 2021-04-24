@@ -5,9 +5,9 @@ var cave_root
 
 var ypos;
 var alive = true
+export var is_main = false
 
 var segments
-
 
 func _ready():
     cave_root = get_node("/root/Game/CaveRoot")
@@ -21,11 +21,17 @@ func _process(_delta):
         add_seg()
 
 func add_seg():
-    var type = int(rand_range(0, 3))
+    var type;
+    if is_main:
+        type = randi() % 2
+    else:
+        type = randi() % 2 + 1
+
     var seg = segments[type].instance()
     seg.translation = Vector3(0, ypos - global_transform.origin.y, 0)
 
     add_child(seg)
+
     if type == 2:
         alive = false
 

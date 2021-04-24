@@ -6,6 +6,6 @@ export var seg_scale = 32
 export var dist_y = 2.5
 export var dist_x = 4
 
-export var segments = [preload("res://scenes/cave_segments/seg_straight.tscn"),
-                        preload("res://scenes/cave_segments/seg_branch.tscn"),
+export var segments = [preload("res://scenes/cave_segments/seg_branch.tscn"),
+                        preload("res://scenes/cave_segments/seg_straight.tscn"),
                         preload("res://scenes/cave_segments/seg_end.tscn")]

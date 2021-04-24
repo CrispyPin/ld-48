@@ -36,8 +36,8 @@ func _physics_process(_delta):
     if Input.is_action_pressed("move_down"):
         dir += Vector3(0,-1, 0)
 
-	dir = dir.normalized()
-	add_force(dir*speed,Vector3())
+    dir = dir.normalized()
+    add_force(dir*speed,Vector3())
 
     dir = dir.normalized()
     add_force(dir * speed, Vector3())
