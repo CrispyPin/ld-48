@@ -36,7 +36,7 @@ func _physics_process(_delta):
 	add_force(dir*speed,Vector3())
 
 	var shark_rot = (-linear_velocity + -$shark.transform.basis.z)/2
-	$shark.transform = $shark.transform.looking_at(shark_rot, Vector3(0,1,0))
+	$shark.look_at(shark_rot, Vector3(0,1,0))
 
 
 
