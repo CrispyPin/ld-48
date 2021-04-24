@@ -8,8 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Boid",
+"language": "GDScript",
+"path": "res://scripts/boid.gd"
+} ]
 _global_script_class_icons={
+"Boid": ""
 }
 
 [application]
