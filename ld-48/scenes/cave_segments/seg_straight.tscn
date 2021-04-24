@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/segment.gd" type="Script" id=1]
+[ext_resource path="res://models/cave_segments/seg_straight_1.fbx" type="PackedScene" id=2]
+
+[node name="seg_straight" type="Spatial"]
+script = ExtResource( 1 )
+models = [ ExtResource( 2 ) ]

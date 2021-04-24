@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/segment.gd" type="Script" id=1]
+[ext_resource path="res://models/cave_segments/seg_branch_1.fbx" type="PackedScene" id=2]
+
+[node name="seg_branch" type="Spatial"]
+script = ExtResource( 1 )
+is_branch = true
+models = [ ExtResource( 2 ) ]
