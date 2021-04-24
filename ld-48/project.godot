@@ -20,8 +20,6 @@ _global_script_classes=[ {
 "path": "res://scripts/boids.gd"
 } ]
 _global_script_class_icons={
-"Boid": "",
-"Boids": ""
 }
 
 [application]
