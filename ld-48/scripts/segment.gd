@@ -8,6 +8,7 @@ onready var seg_scale = cave_root.seg_scale
 onready var dist_x = cave_root.dist_x
 
 func _ready() -> void:
+    $CollisionShape.scale = Vector3(1,1,1) * seg_scale * 100#thanks to wrong units
     var model = models[0].instance()
     add_child(model)
     model.scale = Vector3(1,1,1) * seg_scale
