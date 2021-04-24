@@ -23,6 +23,7 @@ transform = Transform( -1, 5.01436e-08, 7.16125e-08, 0, 0.819152, -0.573576, -8.
 
 [node name="Camera" type="Camera" parent="CameraRoot"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -10 )
+far = 1024.0
 
 [node name="shark" parent="." instance=ExtResource( 1 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
