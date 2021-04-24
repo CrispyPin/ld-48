@@ -23,6 +23,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 256, 0 )
 seg_scale = 64
 
 [node name="KinematicBody" type="RigidBody" parent="."]
+visible = false
 mode = 1
 
 [node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]

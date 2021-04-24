@@ -29,9 +29,15 @@ func init(_type):
     addRayCast(model,Vector3(-0.5,0,-0.5))
     addRayCast(model,Vector3(-0.5,0,0.5))
 
+func addMultiRayCast(except,diff):
+    addRayCast(except,diff)
+    addRayCast(except,diff*2)
+    addRayCast(except,diff*4)
+
 func addRayCast(except,diff):
     var ray = RayCast.new()
     ray.cast_to = Vector3(0,-1,0) + diff
+    ray.cast_to = ray.cast_to.normalized()
     ray.cast_to*=20
     add_child(ray)
     ray.enabled = true

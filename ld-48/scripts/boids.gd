@@ -5,7 +5,7 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 100
+var initNumBoid = 1
 var boidSpeed = 1
 
 var numTypes = 2
@@ -33,7 +33,7 @@ func randVec(l=1):
 func randVecNoZ(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), 0)
 
-func addBoid(position=randVec(20), type=randi()%2, rotation=randVecNoZ(PI)):
+func addBoid(position=randVec(40), type=randi()%2, rotation=randVecNoZ(PI)):
     var boid = boidResource.instance()
     boid.translation = position
     boid.rotation = rotation
@@ -152,17 +152,17 @@ func updateBoids(delta):
         #    boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*100*avoidPlayerStrength
 
         #move to center
-        boid.steerTarget += -boid.translation.normalized()*1*centerStrength
+        #boid.steerTarget += -boid.translation.normalized()*1*centerStrength
 
     #avoid other objects
     for boid in boidList:
-        for i in range(0,4):
-            var ray = boid.rayCasts[i]
+        for ray in boid.rayCasts:
             if ray.is_colliding():
                 #print("COLLIDE!")
                 #print(i)
-                #print(ray.get_collision_point())
-                boid.steerTarget = (boid.translation - ray.get_collision_point())*1000
+                print(ray.get_collision_point())
+                boid.steerTarget -= (boid.translation - ray.get_collision_point()).normalized()*10
+                break
 
     mutex.lock()
     for boid in boidList:
