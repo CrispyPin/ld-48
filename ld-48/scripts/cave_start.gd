@@ -16,7 +16,7 @@ func _ready():
     ypos = global_transform.origin.y
 
 func _process(_delta):
-    if ypos - player.translation.y > cave_root.gen_depth and alive:
+    if ypos > player.translation.y - cave_root.gen_depth and alive:
         ypos -= cave_root.dist_y * cave_root.seg_scale
         add_seg()
 
