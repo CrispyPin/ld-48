@@ -5,6 +5,7 @@ class_name Boid
 
 var type = 0
 var steerTarget #dir to steer towards
+var oldSteerTarget #new dir to steer towards
 
 func _ready():
 	pass
