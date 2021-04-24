@@ -5,11 +5,14 @@ class_name Boids
 var mutex
 var semaphore
 var thread
+var initNumBoid = 300
+var boidSpeed = 5
 
 var numTypes = 5
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
+
 onready var player = get_node("/root/Game/Player")
 
 export (float, 0.0, 2.0) var collidePreventStrength=1
@@ -28,11 +31,13 @@ func randVec(l=1):
 func randVecNoZ(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), 0)
 
-func addBoid(position=randVec(20), type=0, rotation=randVecNoZ(PI)):
+func addBoid(position=randVec(20), type=randi()%2, rotation=randVecNoZ(PI)):
     var boid = boidResource.instance()
     boid.translation = position
     boid.rotation = rotation
-    boid.type = type
+    boid.steerTarget = getDir(boid)
+    boid.oldSteerTarget = getDir(boid)
+    boid.init(type)
     boidList.append(boid)
     add_child(boid)
 
@@ -45,7 +50,7 @@ func _ready():
 
     randomize()
     boidResource = load(boidResourcePath)
-    for i in range(0,100):
+    for i in range(0,initNumBoid):
         addBoid()
 
 func getDir(node):
@@ -62,8 +67,8 @@ func dirToRotX(vec):
 
 #update data in boid
 func updateBoid(boid, other, delta):
-    #if canSee(boid, other):
-    if true:
+    if canSee(boid, other):
+    #if true:
         var numBoids = len(boidList)
         var pdiff = (boid.translation - other.translation)
         var dist = pdiff.length()
@@ -76,15 +81,15 @@ func updateBoid(boid, other, delta):
         if dist<radiusCollide:
             steerTarget += 5*(distFactor/dist/dist-(1/radiusCollide/radiusCollide))*pdiff.normalized()*collidePreventStrength
 
-        #steer towards nearby boid
-        elif dist<radiusAttract:
+        #steer towards nearby boid if type is equal
+        elif dist<radiusAttract && boid.type == other.type:
             steerTarget -= (cos(
                 (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
             )-1)*pdiff.normalized()*nearbySteerStrength
 
 
-        #make steering equal other boid
-        if dist<radiusAttract:
+        #make steering equal other boid if type is equal
+        if dist<radiusAttract && boid.type == other.type:
             steerTarget += getDir(other)*copyDirStrength
 
         boid.steerTarget+=steerTarget
@@ -95,28 +100,27 @@ func canSee(boid, other):
 
 #move boid
 func moveBoid(boid, delta):
-    boid.translation+=getDir(boid)*delta*5
+    boid.translation+=getDir(boid)*delta*5*boidSpeed
     #boid.look_at(boid.steerTarget + boid.translation, Vector3(0,1,0))
     #boid.look_at(-boid.steerTarget + boid.translation, Vector3(0,1,0))
-    boid.transform = boid.transform.looking_at(-boid.steerTarget + boid.translation, Vector3(0,1,0))
+    var current = getDir(boid)
+    var target = boid.oldSteerTarget.normalized()
+    var interpolated = current.move_toward(target, delta)
+    #boid.transform = boid.transform.looking_at(-boid.oldSteerTarget + boid.translation, Vector3(0,1,0))
+    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
 
 
 var imod = 0
 func _process(delta):
+
     if imod%24==0:
-
-        mutex.lock()
-
-        for boid in boidList:
-            boid.steerTarget = getDir(boid)
-
-        mutex.unlock()
-
         semaphore.post()
+
     mutex.lock()
     for boid in boidList:
         moveBoid(boid, delta)
     mutex.unlock()
+
     imod+=1
 
 func _updateBoidThreadFunc(delta=0.1):
@@ -126,11 +130,12 @@ func _updateBoidThreadFunc(delta=0.1):
 
 func updateBoids(delta):
 
-
     semaphore.wait()
 
     for boid in boidList:
-        #mutex.lock()
+        boid.steerTarget = getDir(boid)
+
+    for boid in boidList:
         for other in boidList:
             pass
             if boid!=other:
@@ -143,6 +148,10 @@ func updateBoids(delta):
             boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*100*avoidPlayerStrength
 
         #move to center
-        boid.steerTarget += -boid.translation.normalized()*0.1*centerStrength
-        #mutex.unlock()
+        boid.steerTarget += -boid.translation.normalized()*1*centerStrength
+
+    mutex.lock()
+    for boid in boidList:
+        boid.oldSteerTarget = boid.steerTarget
+    mutex.unlock()
 

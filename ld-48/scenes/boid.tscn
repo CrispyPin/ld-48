@@ -2,20 +2,13 @@
 
 [ext_resource path="res://scripts/boid.gd" type="Script" id=1]
 [ext_resource path="res://models/fish/fish-1.fbx" type="PackedScene" id=2]
+[ext_resource path="res://models/fish/fish-2.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SphereShape" id=1]
 
-[sub_resource type="CubeMesh" id=2]
-
 [node name="Boid" type="KinematicBody"]
 script = ExtResource( 1 )
+models = [ ExtResource( 2 ), ExtResource( 3 ) ]
 
-[node name="CollisionShape2D" type="CollisionShape" parent="."]
+[node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
-
-[node name="MeshInstance" type="MeshInstance" parent="."]
-visible = false
-mesh = SubResource( 2 )
-material/0 = null
-
-[node name="fish-1" parent="." instance=ExtResource( 2 )]
