@@ -31,21 +31,27 @@ func _physics_process(_delta):
         dir -= $CameraRoot.transform.basis.x
     if Input.is_action_pressed("move_left"):
         dir += $CameraRoot.transform.basis.x
+    if Input.is_action_pressed("move_up"):
+        dir += Vector3(0, 1, 0)
+    if Input.is_action_pressed("move_down"):
+        dir += Vector3(0,-1, 0)
+
+	dir = dir.normalized()
+	add_force(dir*speed,Vector3())
 
     dir = dir.normalized()
-    add_force(dir*speed,Vector3())
-
-    var shark_rot = (-linear_velocity + -$shark.transform.basis.z*10)/11
-    $shark.transform = $shark.transform.looking_at(shark_rot, Vector3(0,1,0))
+    add_force(dir * speed, Vector3())
+    if linear_velocity.length() > 0:
+        var shark_rot = (-linear_velocity + -$shark.transform.basis.z)/2
+        $shark.transform = $shark.transform.looking_at(shark_rot, Vector3(0,1,0))
 
 
 
 
 func handle_zoom():
     if Input.is_action_just_released("zoom_in"):
-        if -$CameraRoot/Camera.transform.origin.z > zoom_min:
-            $CameraRoot/Camera.transform.origin /= zoom_factor
-    elif Input.is_action_just_released("zoom_out"):
-        if -$CameraRoot/Camera.transform.origin.z < zoom_max:
-            $CameraRoot/Camera.transform.origin *= zoom_factor
+        $CameraRoot/Camera.translation /= zoom_factor
+    if Input.is_action_just_released("zoom_out"):
+        $CameraRoot/Camera.translation *= zoom_factor
+    $CameraRoot/Camera.translation.z = clamp($CameraRoot/Camera.translation.z, -zoom_max, -zoom_min)
 

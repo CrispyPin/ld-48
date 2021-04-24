@@ -11,7 +11,8 @@ gravity_scale = 0.0
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-linear_damp = 5.0
+linear_damp = 1.0
+angular_damp = 1.0
 script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -23,7 +24,7 @@ transform = Transform( -1, 5.01436e-08, 7.16125e-08, 0, 0.819152, -0.573576, -8.
 
 [node name="Camera" type="Camera" parent="CameraRoot"]
 transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -10 )
-far = 300.0
+far = 1024.0
 
 [node name="shark" parent="." instance=ExtResource( 1 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
