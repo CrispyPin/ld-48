@@ -1,4 +1,4 @@
-extends KinematicBody
+extends RigidBody
 class_name Boid
 
 enum Type {T1,T2}
@@ -13,6 +13,8 @@ export var models = [
         preload("res://models/fish/fish-1.fbx")
         ]
 
+var rayCasts = []
+
 func init(_type):
     type = _type
 
@@ -20,8 +22,31 @@ func init(_type):
     #rng.seed=type+1
 
     var model = models[type].instance()
+    mode = MODE_STATIC
     add_child(model)
+    addRayCast(model,Vector3(0.5,0,-0.5))
+    addRayCast(model,Vector3(0.5,0,0.5))
+    addRayCast(model,Vector3(-0.5,0,-0.5))
+    addRayCast(model,Vector3(-0.5,0,0.5))
+
+func addRayCast(except,diff):
+    var ray = RayCast.new()
+    ray.cast_to = Vector3(0,-1,0) + diff
+    ray.cast_to*=20
+    add_child(ray)
+    ray.enabled = true
+    ray.exclude_parent = false
+    #ray.transform = transform
+    ray.collide_with_bodies=true
+    ray.collide_with_areas=true
+
+    rayCasts.append(ray)
 
 
 func _ready():
-	pass
+    pass
+
+#func _process(delta):
+#    for ray in rayCasts:
+#        if ray.is_colliding():
+#            print("collide")

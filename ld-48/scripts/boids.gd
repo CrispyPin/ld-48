@@ -5,13 +5,15 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 300
-var boidSpeed = 5
+var initNumBoid = 100
+var boidSpeed = 1
 
-var numTypes = 5
+var numTypes = 2
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
+
+var framesPerUpdate = 1
 
 onready var player = get_node("/root/Game/Player")
 
@@ -101,19 +103,21 @@ func canSee(boid, other):
 #move boid
 func moveBoid(boid, delta):
     boid.translation+=getDir(boid)*delta*5*boidSpeed
+
     #boid.look_at(boid.steerTarget + boid.translation, Vector3(0,1,0))
     #boid.look_at(-boid.steerTarget + boid.translation, Vector3(0,1,0))
+    #boid.transform = boid.transform.looking_at(-boid.oldSteerTarget + boid.translation, Vector3(0,1,0))
+
     var current = getDir(boid)
     var target = boid.oldSteerTarget.normalized()
     var interpolated = current.move_toward(target, delta)
-    #boid.transform = boid.transform.looking_at(-boid.oldSteerTarget + boid.translation, Vector3(0,1,0))
     boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
 
 
 var imod = 0
 func _process(delta):
 
-    if imod%24==0:
+    if imod%framesPerUpdate==0:
         semaphore.post()
 
     mutex.lock()
@@ -144,11 +148,21 @@ func updateBoids(delta):
         #move away from player
         var dp = (boid.translation-player.translation)
         var dist = dp.length()
-        if dist<radiusPlayer:
-            boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*100*avoidPlayerStrength
+        #if dist<radiusPlayer:
+        #    boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*100*avoidPlayerStrength
 
         #move to center
         boid.steerTarget += -boid.translation.normalized()*1*centerStrength
+
+    #avoid other objects
+    for boid in boidList:
+        for i in range(0,4):
+            var ray = boid.rayCasts[i]
+            if ray.is_colliding():
+                #print("COLLIDE!")
+                #print(i)
+                #print(ray.get_collision_point())
+                boid.steerTarget = (boid.translation - ray.get_collision_point())*1000
 
     mutex.lock()
     for boid in boidList:

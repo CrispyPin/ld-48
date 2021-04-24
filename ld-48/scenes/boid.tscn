@@ -6,7 +6,7 @@
 
 [sub_resource type="SphereShape" id=1]
 
-[node name="Boid" type="KinematicBody"]
+[node name="Boid" type="RigidBody"]
 script = ExtResource( 1 )
 models = [ ExtResource( 2 ), ExtResource( 3 ) ]
 
