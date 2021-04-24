@@ -10,7 +10,7 @@ var segments
 
 
 func _ready():
-	cave_root = get_node("/root/Game/cave_root")
+	cave_root = get_node("/root/Game/CaveRoot")
 	segments = cave_root.segments
 
 	ypos = transform.origin.y
