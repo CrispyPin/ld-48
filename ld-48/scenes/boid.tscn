@@ -1,10 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/boid.gd" type="Script" id=1]
 
 [sub_resource type="SphereShape" id=1]
 
 [sub_resource type="CubeMesh" id=2]
 
 [node name="Boid" type="KinematicBody"]
+script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
