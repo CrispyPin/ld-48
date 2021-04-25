@@ -5,8 +5,8 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-#var initNumBoid = 1000
-var initNumBoid = 500
+var initNumBoid = 1000
+#var initNumBoid = 200
 var boidSpeed = 3
 
 #num STARTING types
@@ -16,7 +16,7 @@ var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
 
-var framesPerUpdate = 10
+var framesPerUpdate = 1
 
 var boidDeadPos = Vector3(0,100,0)
 
@@ -42,7 +42,8 @@ func randVec(l=1):
 func randVecNoZ(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), 0)
 
-func addBoid(position=randVec(40), type=randi()%numTypes, rotation=randVecNoZ(PI)):
+func addBoid(position=randVec(40), type=0, rotation=randVecNoZ(PI)):
+    mutex.lock()
     var boid = boidResource.instance()
     boid.rotation = rotation
     boid.steerTarget = getDir(boid)
@@ -51,6 +52,7 @@ func addBoid(position=randVec(40), type=randi()%numTypes, rotation=randVecNoZ(PI
     boidList.append(boid)
 
     respawnBoid(boid, null)
+    mutex.unlock()
 
 func tryRespawnBoid(num=1, pos=null):
     if outOfBoids:
@@ -83,7 +85,8 @@ func respawnBoid(boid, pos=null):
     boid.show()
     boid.setActiveEnabled(true)
 
-    boid.reInit(player.translation.y/30.0 + randi()%3)
+    boid.reInit(randi()%3)
+    #boid.reInit(-player.translation.y/30.0 + randi()%3)
 
     add_child(boid)
     #print(boid.translation)
@@ -94,8 +97,8 @@ func killBoid(boid):
     boid.hide()
     outOfBoids=false
     boid.setActiveEnabled(false)
-    if boid.get_parent() == self:
-        remove_child(boid)
+    #if boid.get_parent() == self:
+    remove_child(boid)
     #print("boid killed")
     #boid.set_process(false)
 
@@ -137,24 +140,27 @@ func updateBoid(boid, other, delta):
 
         ##prevent collision with other boids
         if dist<radiusCollide:
+            pass
             steerTarget += 5*(distFactor/dist/dist-(1/radiusCollide/radiusCollide))*pdiff.normalized()*collidePreventStrength
 
         ##steer towards nearby boid if type is equal
         elif dist<radiusAttract:
-            if boid.type == other.type:
+            #TODO:swp test
+            if int(boid.type) == int(other.type):
                 steerTarget += (cos(
                     (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-                )-1)*pdiff.normalized()*nearbySteerStrength*5
+                )-1)*pdiff.normalized()*nearbySteerStrength*5000000
             else:
                 steerTarget -= (cos(
                     (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-                )-1)*pdiff.normalized()*nearbySteerStrength*5
+                )-1)*pdiff.normalized()*nearbySteerStrength*5000000
 
         ##make steering equal other boid if type is equal
         if dist<radiusAttract && boid.type == other.type:
             steerTarget += getDir(other)*copyDirStrength*10
 
         boid.steerTarget+=steerTarget
+
 
 #180 degree FOV
 func canSee(boid, other):
@@ -173,9 +179,9 @@ func moveBoid(boid, delta):
     var interpolated = current.move_toward(target, delta*2)
 
     #var up = target
-    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), delta/8.0)
-    #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
-    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
+    #var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), delta/8.0)
+    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
+    #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
 
 
 var imod = 0
@@ -189,12 +195,17 @@ func _process(delta):
         if !boid.isAlive:
             killBoid(boid)
             continue
+
+        boid.steerTarget = boid.steerTarget.normalized()
+        boid.steerTarget += randVec(0.1)
         moveBoid(boid, delta)
     mutex.unlock()
+
+    mutex.lock()
     if imod%20:
         tryRespawnBoid(1)
     imod+=1
-
+    mutex.unlock()
 
 func _physics_process(delta):
     for boid in boidList:
