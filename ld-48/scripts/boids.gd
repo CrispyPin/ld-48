@@ -6,7 +6,7 @@ var mutex
 var semaphore
 var thread
 #var initNumBoid = 1000
-var initNumBoid = 100
+var initNumBoid = 500
 var boidSpeed = 3
 
 var numTypes = 6
