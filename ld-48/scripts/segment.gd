@@ -13,12 +13,15 @@ func _ready() -> void:
     add_child(model)
     model.scale = Vector3(1,1,1) * seg_scale
     model.get_child(0).get_child(0).set_surface_material(0, load("res://shaders/cave_mat.tres"))
-    rotate_y(randf()*360)
+    if is_branch:
+        rotate_y(randf() * 60 + 150)
+    else:
+        model.rotate_y(randf()*360)
 
     if is_branch:
         var new_start = load("res://scenes/cave_start.tscn").instance()
         new_start.translation = Vector3(0, 0, -dist_x * seg_scale)
-        new_start.rotation_degrees.y = 180
+        #new_start.rotation_degrees.y = 180
         new_start.get_child(0).scale = Vector3(1,1,1) * seg_scale
         if randf() > 0.5:
             new_start.is_main = true
