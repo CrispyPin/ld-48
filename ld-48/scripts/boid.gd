@@ -1,10 +1,11 @@
 extends RigidBody
 class_name Boid
 
+enum Type {T1,T2}
 
 
 
-var type = 0
+var type = -1
 var steerTarget #dir to steer towards
 var oldSteerTarget #new dir to steer towards
 
@@ -26,7 +27,7 @@ var rayCasts = []
 
 var material = null
 
-var numTypes=3.0
+var numTypes=12.0
 
 var model = null
 
@@ -40,14 +41,13 @@ func init(_type):
     #addRayCast(model,Vector3(-0.5,0,0.5))
 
 func reInit(_type):
-    #type = int(_type)
-    type = _type
+    type = int(_type)
 
     if model != null:
         remove_child(model)
 
-    
-    
+
+
 
     #var rng = RandomNumberGenerator.new()
     #rng.seed=type+1
@@ -60,12 +60,12 @@ func reInit(_type):
     #mesh.scale.z = 100*cos(type*1.2384388923848829399588)
 
 
-    #material = ShaderMaterial.new()
-    #material.set_shader(fishShader)
+    material = ShaderMaterial.new()
+    material.set_shader(fishShader)
     #material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5)
-    #if type%3==0:
-    #    material.set_shader_param ( "emission", Color.from_hsv(type/numTypes, 1, 1) )
-    #    material.set_shader_param ( "pulse", true )
+    if type%3==0:
+        material.set_shader_param ( "emission", Color.from_hsv(type/numTypes, 1, 1) )
+        material.set_shader_param ( "pulse", true )
 
 
     #material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
@@ -75,13 +75,11 @@ func reInit(_type):
     #mesh.set_surface_material(0,material)
 
     mode = MODE_STATIC
-
     add_child(model)
-
-    #addRayCast(model,Vector3(0.5,0,-0.5))
-    #addRayCast(model,Vector3(0.5,0,0.5))
-    #addRayCast(model,Vector3(-0.5,0,-0.5))
-    #addRayCast(model,Vector3(-0.5,0,0.5))
+    addRayCast(model,Vector3(0.5,0,-0.5))
+    addRayCast(model,Vector3(0.5,0,0.5))
+    addRayCast(model,Vector3(-0.5,0,-0.5))
+    addRayCast(model,Vector3(-0.5,0,0.5))
 
 func addMultiRayCast(except,diff):
     #addRayCast(except,diff)
