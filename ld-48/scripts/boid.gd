@@ -1,4 +1,3 @@
-#TODO: random
 extends RigidBody
 class_name Boid
 
@@ -21,7 +20,7 @@ var isAlive = true
 var fishShader = load("res://shaders/fish.shader")
 
 export var models = [
-        preload("res://models/fish/fish-1.fbx")
+        preload("res://models/fish/fish-1.tscn")
         ]
 
 var rayCasts = []
@@ -53,8 +52,8 @@ func reInit(_type):
     #var rng = RandomNumberGenerator.new()
     #rng.seed=type+1
 
-    model = models[type%len(models)].instance()
-    var mesh = model.get_children()[0].get_children()[0]
+    var model = models[type%len(models)].instance()
+    var mesh = model
 
     #Use when non-uniform scale is applied to mesh.
     #mesh.scale.x = 100*sin(type)
@@ -74,7 +73,12 @@ func reInit(_type):
     material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
     mesh.set_surface_material(0,material)
 
+    mode = MODE_STATIC
     add_child(model)
+    addRayCast(model,Vector3(0.5,0,-0.5))
+    addRayCast(model,Vector3(0.5,0,0.5))
+    addRayCast(model,Vector3(-0.5,0,-0.5))
+    addRayCast(model,Vector3(-0.5,0,0.5))
 
 func addMultiRayCast(except,diff):
     #addRayCast(except,diff)
