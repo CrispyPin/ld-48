@@ -11,18 +11,18 @@ onready var seg_scale = cave_root.seg_scale
 onready var dist_x = cave_root.dist_x
 
 func _ready() -> void:
-    $CollisionShape.scale = Vector3(1,1,1) * seg_scale * 100#thanks to wrong units
+    $CollisionShape.scale = Vector3(1,1,1) * seg_scale
     var model = models[0].instance()
     add_child(model)
     model.scale = Vector3(1,1,1) * seg_scale
 
-    model.get_child(0).get_child(0).set_surface_material(0, load("res://shaders/cave_mat.tres"))
+    model.set_surface_material(0, load("res://shaders/cave_mat.tres"))
     if is_branch:
         rotate_y(randf() * 60 + 150)
     else:
         model.rotate_y(randf()*360)
 
-    add_decor(model.get_child(0).get_child(0))
+    add_decor(model)
 
     if is_branch:
         var new_start = load("res://scenes/cave_start.tscn").instance()
