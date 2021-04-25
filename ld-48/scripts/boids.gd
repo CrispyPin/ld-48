@@ -68,7 +68,7 @@ func tryRespawnBoid(num=1, pos=null):
         if num == 0:
             return num
     return num
-            
+
 
 func respawnBoid(boid, pos=null):
     if pos == null:
@@ -81,7 +81,7 @@ func respawnBoid(boid, pos=null):
     boid.setActiveEnabled(true)
 
     add_child(boid)
-    print(boid.translation)
+    #print(boid.translation)
     #boid.set_process(false)
 
 func killBoid(boid):
@@ -89,8 +89,9 @@ func killBoid(boid):
     boid.hide()
     outOfBoids=false
     boid.setActiveEnabled(false)
-    remove_child(boid)
-    print("boid killed")
+    if boid.get_parent() == self:
+        remove_child(boid)
+    #print("boid killed")
     #boid.set_process(false)
 
 # Called when the node enters the scene tree for the first time.
@@ -203,8 +204,8 @@ func _physics_process(delta):
                     boid.closestPD = boid.translation - ray.get_collision_point()
                     break
 
-                                
-    mutex.lock() 
+
+    mutex.lock()
     for boid in boidList:
         boid.oldClosestPD = boid.closestPD
         boid.oldClosestPoint = boid.closestPoint
@@ -226,7 +227,7 @@ func updateBoids(delta):
         boid.steerTarget = getDir(boid)
         boid.steerTarget.x = 0
         boid.steerTarget = boid.steerTarget.normalized()*4
-        
+
 
         for other in boidList:
             pass

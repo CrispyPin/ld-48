@@ -2,6 +2,9 @@ extends Spatial
 
 export var is_branch = false
 export var models = []
+var decor = [preload("res://models/seagrass/seagrass-1.tscn"),
+preload("res://models/seagrass/seagrass-2.tscn"),
+preload("res://models/seagrass/seagrass-3.tscn")]
 
 onready var cave_root = get_node("/root/Game/CaveRoot")
 onready var seg_scale = cave_root.seg_scale
@@ -18,6 +21,8 @@ func _ready() -> void:
     else:
         model.rotate_y(randf()*360)
 
+    add_decor(model.get_child(0).get_child(0))
+
     if is_branch:
         var new_start = load("res://scenes/cave_start.tscn").instance()
         new_start.translation = Vector3(0, 0, -dist_x * seg_scale)
@@ -27,3 +32,17 @@ func _ready() -> void:
             new_start.is_main = true
             get_parent().is_main = false
         add_child(new_start)
+
+func add_decor(model):
+    var mdt = MeshDataTool.new()
+    var mesh = model.get_mesh()
+    mdt.create_from_surface(mesh, 0)
+    for vi in range(mdt.get_vertex_count()):
+        var vert = mdt.get_vertex(vi)
+        if randf() > 0.9:
+            var type = randi() % len(decor)
+            var d = decor[type].instance()
+            add_child(d)
+            d.global_transform.origin = model.global_transform.xform(vert)
+            d.scale = Vector3(5,5,5)
+            d.rotation = Vector3(randf(), randf(), randf())*3.14

@@ -53,7 +53,6 @@ func _physics_process(_delta):
 
 
 
-
 func handle_zoom():
     if Input.is_action_just_released("zoom_in"):
         $CameraRoot/Camera.translation /= zoom_factor
@@ -75,4 +74,3 @@ func _on_Player_body_entered(body: Node) -> void:
     if body.is_in_group("boids"):
         body.isAlive = false
         energy += energy_gain
-        print("omnomnom")
