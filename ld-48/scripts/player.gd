@@ -49,7 +49,7 @@ func _physics_process(_delta):
     dir = dir.normalized()
     #add_force(dir*speed,Vector3())
 
-    var current = $model.transform.basis.z 
+    var current = $model.transform.basis.z
     var target = dir
     var interpolated = -current.move_toward(target,_delta*speed/40)
 
