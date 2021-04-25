@@ -13,7 +13,7 @@ var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
 
-var framesPerUpdate = 5
+var framesPerUpdate = 1
 
 var boidDeadPos = Vector3(0,100,0)
 
@@ -27,8 +27,8 @@ export (float, 0.0, 2.0) var copyDirStrength=1
 export (float, 0.0, 8.0) var radiusCollide=4
 export (float, 0.0, 16.0) var radiusAttract=8
 export (float, 0.0, 32.0) var radiusPlayer=16
-export (float, 0.0, 256.0) var radiusDie=256
-export (float, 0.0, 256.0) var radiusSpawnSpread=64
+export (float, 0.0, 256.0) var radiusDie=512
+export (float, 1.0, 256.0) var radiusSpawnSpread=100
 
 var outOfBoids = false
 
@@ -40,13 +40,13 @@ func randVecNoZ(l=1):
 
 func addBoid(position=randVec(40), type=randi()%2, rotation=randVecNoZ(PI)):
     var boid = boidResource.instance()
-    respawnBoid(boid, null)
     boid.rotation = rotation
     boid.steerTarget = getDir(boid)
     boid.oldSteerTarget = getDir(boid)
     boid.init(type)
     boidList.append(boid)
-    add_child(boid)
+
+    respawnBoid(boid, null)
 
 func tryRespawnBoid(num=1, pos=null):
     if outOfBoids:
@@ -58,7 +58,6 @@ func tryRespawnBoid(num=1, pos=null):
             outOfBoids=false
 
     if outOfBoids:
-        print("outOfBoids")
         return num
 
     for boid in boidList:
@@ -73,16 +72,25 @@ func tryRespawnBoid(num=1, pos=null):
 func respawnBoid(boid, pos=null):
     if pos == null:
         boid.translation = Vector3(rand_range(-1,1), rand_range(-1,1), rand_range(-1,1))
-        boid.translation = boid.translation.normalized()*radiusSpawnSpread + player.translation + Vector3(0,-radiusSpawnSpread*3,0)
+        boid.translation = boid.translation.normalized()*radiusSpawnSpread + player.translation + Vector3(0,-radiusSpawnSpread*5,0)
     else:
         boid.translation = pos
     boid.isAlive = true
     boid.show()
+    boid.setActiveEnabled(true)
+
+    add_child(boid)
+    print(boid.translation)
+    #boid.set_process(false)
 
 func killBoid(boid):
     boid.translation = boidDeadPos
     boid.hide()
     outOfBoids=false
+    boid.setActiveEnabled(false)
+    remove_child(boid)
+    print("boid killed")
+    #boid.set_process(false)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -120,18 +128,18 @@ func updateBoid(boid, other, delta):
         var distFactor = 1/dist
 
 
-        #prevent collision with other boids
+        ##prevent collision with other boids
         if dist<radiusCollide:
             steerTarget += 5*(distFactor/dist/dist-(1/radiusCollide/radiusCollide))*pdiff.normalized()*collidePreventStrength
 
-        #steer towards nearby boid if type is equal
+        ##steer towards nearby boid if type is equal
         elif dist<radiusAttract && boid.type == other.type:
             steerTarget -= (cos(
                 (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
             )-1)*pdiff.normalized()*nearbySteerStrength
 
 
-        #make steering equal other boid if type is equal
+        ##make steering equal other boid if type is equal
         if dist<radiusAttract && boid.type == other.type:
             steerTarget += getDir(other)*copyDirStrength
 
@@ -152,7 +160,11 @@ func moveBoid(boid, delta):
     var current = getDir(boid)
     var target = boid.oldSteerTarget.normalized()
     var interpolated = current.move_toward(target, delta*2)
-    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
+
+    if boid.oldClosestPD!=null:
+        boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
+    else:
+        boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,0,1))
 
 
 var imod = 0
@@ -182,15 +194,8 @@ func _physics_process(delta):
                 #print(ray.get_collision_point())
                 if boid.closestPoint==null:
                     boid.closestPoint = ray.get_collision_point()
-                    boid.closestPD = boid.translation
-                    continue
-
-                var pdnew = boid.translation - ray.get_collision_point()
-                var pdother = boid.closestPD
-
-                if pdnew.length()<pdother.length():
-                    boid.closestPoint = ray.get_collision_point()
-                    boid.closestPD = pdnew
+                    boid.closestPD = boid.translation - ray.get_collision_point()
+                    break
 
                                 
     mutex.lock() 
@@ -213,6 +218,9 @@ func updateBoids(delta):
             continue
 
         boid.steerTarget = getDir(boid)
+        boid.steerTarget.x = 0
+        boid.steerTarget = boid.steerTarget.normalized()*4
+        
 
         for other in boidList:
             pass
@@ -223,8 +231,8 @@ func updateBoids(delta):
         var dp = (boid.translation-player.translation)
         var dist = dp.length()
 
-        if dist<radiusPlayer:
-            boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*1000*avoidPlayerStrength
+        #if dist<radiusPlayer:
+        #    boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*1000*avoidPlayerStrength
 
         #kill boids that are far away from player
         if dist>radiusDie:
@@ -234,18 +242,10 @@ func updateBoids(delta):
         #move to center
         #boid.steerTarget += -boid.translation.normalized()*1*centerStrength
 
-    #avoid other objects
-    #for boid in boidList:
-    #    for ray in boid.rayCasts:
-    #        if ray.is_colliding():
-    #            #print("COLLIDE!")
-    #            #print(i)
-    #            print(ray.get_collision_point())
-    #            boid.steerTarget -= (boid.translation - ray.get_collision_point()).normalized()*10
-    #            break
 
+        #avoid other objects
         if boid.oldClosestPD!=null:
-            boid.steerTarget -= boid.oldClosestPD.normalized()*10
+            boid.steerTarget += boid.oldClosestPD.normalized()*100000000000000
 
     mutex.lock()
     for boid in boidList:
