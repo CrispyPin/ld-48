@@ -9,6 +9,14 @@ var type = -1
 var steerTarget #dir to steer towards
 var oldSteerTarget #new dir to steer towards
 
+var closestPoint = null
+var closestPD = null
+
+var oldClosestPoint = null
+var oldClosestPD = null
+
+var isAlive = true
+
 export var models = [
         preload("res://models/fish/fish-1.fbx")
         ]
@@ -31,8 +39,8 @@ func init(_type):
 
 func addMultiRayCast(except,diff):
     addRayCast(except,diff)
-    addRayCast(except,diff*2)
-    addRayCast(except,diff*4)
+    addRayCast(except,diff/2)
+    addRayCast(except,diff/4)
 
 func addRayCast(except,diff):
     var ray = RayCast.new()

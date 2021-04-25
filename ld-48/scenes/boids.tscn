@@ -7,6 +7,6 @@ script = ExtResource( 1 )
 collidePreventStrength = 2.0
 centerStrength = 0.3
 nearbySteerStrength = 2.0
-copyDirStrength = 0.622
+copyDirStrength = 2.0
 radiusCollide = 1.953
 radiusPlayer = 32.0
