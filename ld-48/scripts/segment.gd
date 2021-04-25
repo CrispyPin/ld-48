@@ -15,6 +15,7 @@ func _ready() -> void:
     var model = models[0].instance()
     add_child(model)
     model.scale = Vector3(1,1,1) * seg_scale
+
     model.get_child(0).get_child(0).set_surface_material(0, load("res://shaders/cave_mat.tres"))
     if is_branch:
         rotate_y(randf() * 60 + 150)

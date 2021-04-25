@@ -12,5 +12,4 @@ data_*/
 mono_crash.*
 
 *.blend1
-
-build
+builds/

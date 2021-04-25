@@ -167,7 +167,7 @@ func moveBoid(boid, delta):
     var current = getDir(boid)
     var target = boid.oldSteerTarget.normalized()
     var interpolated = current.move_toward(target, delta*2)
-    
+
     #var up = target
     var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), delta/8.0)
     #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))

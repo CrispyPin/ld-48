@@ -4,7 +4,7 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/color = Color( 0, 0.419608, 0.0862745, 1 )
-shader_param/speed = 0.5
-shader_param/y_factor = 1.0
-shader_param/y_bias = 0.0
+shader_param/color = Color( 0, 0.5, 0.1, 1 )
+shader_param/speed = 0.2
+shader_param/y_factor = 0.0
+shader_param/y_bias = 4.0
