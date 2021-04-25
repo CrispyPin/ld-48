@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[sub_resource type="SpatialMaterial" id=5]
+[ext_resource path="res://shaders/seagrass_mat.tres" type="Material" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
 vertex_color_use_as_albedo = true
 
-[sub_resource type="ArrayMesh" id=6]
+[sub_resource type="ArrayMesh" id=2]
 resource_name = "seagrass-3"
 surfaces/0 = {
 "aabb": AABB( -1.33027, -1.30953, -1.33537, 2.62977, 2.57343, 2.6092 ),
@@ -12,12 +14,12 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 12000,
-"material": SubResource( 5 ),
+"material": SubResource( 1 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 8160
 }
 
 [node name="seagrass-3" type="MeshInstance"]
-mesh = SubResource( 6 )
-material/0 = null
+mesh = SubResource( 2 )
+material/0 = ExtResource( 1 )
