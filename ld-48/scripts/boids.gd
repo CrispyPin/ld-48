@@ -80,7 +80,7 @@ func respawnBoid(boid, pos=null):
     boid.setActiveEnabled(true)
 
     add_child(boid)
-    print(boid.translation)
+    #print(boid.translation)
     #boid.set_process(false)
 
 func killBoid(boid):
