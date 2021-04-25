@@ -6,7 +6,9 @@
 
 [sub_resource type="SphereShape" id=1]
 
-[node name="Boid" type="RigidBody"]
+[node name="Boid" type="RigidBody" groups=[
+"boids",
+]]
 script = ExtResource( 1 )
 models = [ ExtResource( 2 ), ExtResource( 3 ) ]
 

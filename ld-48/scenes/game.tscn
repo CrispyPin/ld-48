@@ -8,7 +8,6 @@
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 zoom_max = 64
-speed = 250
 
 [node name="Boids" parent="." instance=ExtResource( 1 )]
 

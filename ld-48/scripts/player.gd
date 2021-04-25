@@ -1,5 +1,10 @@
 extends RigidBody
 
+export var energy_max = 100
+export var energy = 100
+export var energy_loss = 5
+export var energy_gain = 5
+
 export var sensitivity_h = 1.0
 export var sensitivity_v = 1.0
 export var zoom_factor = 1.5
@@ -18,7 +23,8 @@ func _input(event):
         angle_v = max(PI *-0.5 - $CameraRoot.rotation.x, angle_v)
         $CameraRoot.rotate_object_local(Vector3(1,0,0), angle_v)
 
-func _process(_delta):
+func _process(delta):
+    energy -= energy_loss * delta
     handle_zoom()
 
 func _physics_process(_delta):
@@ -63,3 +69,10 @@ func handle_zoom():
     if ray_len:
         $CameraRoot/Camera.translation.z = clamp($CameraRoot/Camera.translation.z, -ray_len, -zoom_min)
 
+
+
+func _on_Player_body_entered(body: Node) -> void:
+    if body.is_in_group("boids"):
+        body.isAlive = false
+        energy += energy_gain
+        print("omnomnom")
