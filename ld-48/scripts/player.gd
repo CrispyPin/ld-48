@@ -8,9 +8,11 @@ export var energy_gain = 5
 export var sensitivity_h = 1.0
 export var sensitivity_v = 1.0
 export var zoom_factor = 1.5
-export var zoom_min = 5
+export var zoom_min = 6
 export var zoom_max = 50
 export var speed = 50
+
+var zoom_target = -zoom_min
 
 func _ready():
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -48,17 +50,17 @@ func _physics_process(_delta):
     dir = dir.normalized()
     add_force(dir * speed, Vector3())
     if linear_velocity.length() > 0:
-        var shark_rot = (-linear_velocity + -$shark.transform.basis.z)/2
-        $shark.transform = $shark.transform.looking_at(shark_rot, Vector3(0,1,0))
+        var shark_rot = (-linear_velocity + -$model.transform.basis.z)/2
+        $model.transform = $model.transform.looking_at(shark_rot, Vector3(0,1,0))
 
 
 
 func handle_zoom():
     if Input.is_action_just_released("zoom_in"):
-        $CameraRoot/Camera.translation /= zoom_factor
+        zoom_target /= zoom_factor
     if Input.is_action_just_released("zoom_out"):
-        $CameraRoot/Camera.translation *= zoom_factor
-    $CameraRoot/Camera.translation.z = clamp($CameraRoot/Camera.translation.z, -zoom_max, -zoom_min)
+        zoom_target *= zoom_factor
+    zoom_target = clamp(zoom_target, -zoom_max, -zoom_min)
 
 
     $RayCast.cast_to = $CameraRoot/Camera.global_transform.origin
@@ -66,7 +68,7 @@ func handle_zoom():
         $RayCast.force_raycast_update()
     var ray_len = to_local($RayCast.get_collision_point()).length()
     if ray_len:
-        $CameraRoot/Camera.translation.z = clamp($CameraRoot/Camera.translation.z, -ray_len, -zoom_min)
+        $CameraRoot/Camera.translation.z = clamp(zoom_target, -ray_len, -zoom_min)
 
 
 
