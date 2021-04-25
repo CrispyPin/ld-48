@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/seg_straight_1.fbx-99acf98538fce01747bf19b6d24e98ee.scn"
+path="res://.import/cave-segments.glb-c6f56142c71fa0b1e0f70e1ee459430d.scn"
 
 [deps]
 
-source_file="res://models/cave_segments/seg_straight_1.fbx"
-dest_files=[ "res://.import/seg_straight_1.fbx-99acf98538fce01747bf19b6d24e98ee.scn" ]
+source_file="res://models/cave_segments/cave-segments.glb"
+dest_files=[ "res://.import/cave-segments.glb-c6f56142c71fa0b1e0f70e1ee459430d.scn" ]
 
 [params]
 

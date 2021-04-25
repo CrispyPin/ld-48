@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/segment.gd" type="Script" id=1]
-[ext_resource path="res://models/cave_segments/seg_end_1.fbx" type="PackedScene" id=2]
-[ext_resource path="res://models/cave_segments/colliders/col_end.shape" type="Shape" id=3]
+[ext_resource path="res://models/cave_segments/seg_end_1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://models/cave_segments/colliders/col_end.tres" type="Shape" id=3]
 [ext_resource path="res://scenes/bubbles.tscn" type="PackedScene" id=4]
 [ext_resource path="res://models/long_seagrass/long_seagrass.tscn" type="PackedScene" id=5]
 
@@ -11,23 +11,18 @@ script = ExtResource( 1 )
 models = [ ExtResource( 2 ) ]
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, 0, 0, 0 )
 shape = ExtResource( 3 )
 
 [node name="decor" type="Spatial" parent="CollisionShape"]
-transform = Transform( 0.0001, 0, 0, 0, -4.37114e-12, -0.0001, 0, 0.0001, -4.37114e-12, 0, 0, 0 )
 
 [node name="Bubbles" parent="CollisionShape/decor" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.445022 )
-visible = false
+transform = Transform( 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, -0.374803, -0.445022 )
 
 [node name="Bubbles2" parent="CollisionShape/decor" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.515799, 0, -0.378159 )
-visible = false
+transform = Transform( 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -0.515799, -0.374803, -0.378159 )
 
 [node name="Bubbles3" parent="CollisionShape/decor" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.226537, 5.96046e-08, 0.222842 )
-visible = false
+transform = Transform( 0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -0.226537, -0.374803, 0.222842 )
 
 [node name="long_seagrass" parent="CollisionShape/decor" instance=ExtResource( 5 )]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.2, -0.293 )
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.546697, -0.293 )
