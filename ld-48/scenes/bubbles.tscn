@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://models/bubble/bigBubble.tres" type="SphereMesh" id=1]
 
 [sub_resource type="ParticlesMaterial" id=1]
 lifetime_randomness = 1.0
@@ -9,20 +11,11 @@ initial_velocity = 10.0
 scale = 0.75
 scale_random = 1.0
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0, 0.6, 1, 0 )
-roughness = 0.0
-refraction_enabled = true
-refraction_scale = 0.05
-refraction_texture_channel = 0
-
-[sub_resource type="SphereMesh" id=3]
-material = SubResource( 2 )
-
 [node name="Bubbles" type="Particles"]
 amount = 32
 lifetime = 5.0
 randomness = 1.0
 visibility_aabb = AABB( -3.08877, -1.00001, -15.7339, 6.56646, 61.6669, 31.9009 )
+local_coords = false
 process_material = SubResource( 1 )
-draw_pass_1 = SubResource( 3 )
+draw_pass_1 = ExtResource( 1 )
