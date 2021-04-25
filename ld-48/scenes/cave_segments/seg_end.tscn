@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/segment.gd" type="Script" id=1]
 [ext_resource path="res://models/cave_segments/seg_end_1.fbx" type="PackedScene" id=2]
 [ext_resource path="res://models/cave_segments/colliders/col_end.shape" type="Shape" id=3]
 [ext_resource path="res://scenes/bubbles.tscn" type="PackedScene" id=4]
+[ext_resource path="res://models/long_seagrass/long_seagrass.tscn" type="PackedScene" id=5]
 
 [node name="seg_end" type="StaticBody"]
 script = ExtResource( 1 )
@@ -13,11 +14,20 @@ models = [ ExtResource( 2 ) ]
 transform = Transform( 100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, 0, 0, 0 )
 shape = ExtResource( 3 )
 
-[node name="Bubbles" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -17.0669, 0 )
+[node name="decor" type="Spatial" parent="CollisionShape"]
+transform = Transform( 0.0001, 0, 0, 0, -4.37114e-12, -0.0001, 0, 0.0001, -4.37114e-12, 0, 0, 0 )
 
-[node name="Bubbles2" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05378, -17.0669, 1.47086 )
+[node name="Bubbles" parent="CollisionShape/decor" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.445022 )
+visible = false
 
-[node name="Bubbles3" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.87156, -17.0669, 2.70302 )
+[node name="Bubbles2" parent="CollisionShape/decor" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.515799, 0, -0.378159 )
+visible = false
+
+[node name="Bubbles3" parent="CollisionShape/decor" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.226537, 5.96046e-08, 0.222842 )
+visible = false
+
+[node name="long_seagrass" parent="CollisionShape/decor" instance=ExtResource( 5 )]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.2, -0.293 )
