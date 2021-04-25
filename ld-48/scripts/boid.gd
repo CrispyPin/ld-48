@@ -67,6 +67,7 @@ func reInit(_type):
     add_child(model)
 
 func addMultiRayCast(except,diff):
+    return
     #addRayCast(except,diff)
     #addRayCast(except,diff/2)
     addDirs(30)
