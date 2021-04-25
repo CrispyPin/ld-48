@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://models/fish/fish-2.fbx" type="PackedScene" id=1]
-[ext_resource path="res://shaders/fish_mat.tres" type="Material" id=2]
+[ext_resource path="res://shaders/fish_mat2.tres" type="Material" id=2]
 [ext_resource path="res://shaders/fish_eyes.tres" type="Material" id=3]
 
 [node name="fish-2" instance=ExtResource( 1 )]
