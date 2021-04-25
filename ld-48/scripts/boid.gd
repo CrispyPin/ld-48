@@ -69,10 +69,10 @@ func reInit(_type):
 
 
     #material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
-    #material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1)  )
+    material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1)  )
     #material.set_shader_param ( "offset", rand_range(0,100) )
     #material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
-    #mesh.set_surface_material(0,material)
+    mesh.set_surface_material(0,material)
 
     mode = MODE_STATIC
     add_child(model)
