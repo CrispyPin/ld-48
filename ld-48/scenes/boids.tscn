@@ -5,6 +5,7 @@
 [node name="Boids" type="Node"]
 script = ExtResource( 1 )
 collidePreventStrength = 2.0
+avoidPlayerStrength = 2.0
 centerStrength = 0.3
 nearbySteerStrength = 2.0
 copyDirStrength = 2.0

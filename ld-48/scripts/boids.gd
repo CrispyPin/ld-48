@@ -5,8 +5,8 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 100
-var boidSpeed = 1
+var initNumBoid = 300
+var boidSpeed = 5
 
 var numTypes = 2
 var boidResourcePath = "res://scenes/boid.tscn"
@@ -28,7 +28,9 @@ export (float, 0.0, 8.0) var radiusCollide=4
 export (float, 0.0, 16.0) var radiusAttract=8
 export (float, 0.0, 32.0) var radiusPlayer=16
 export (float, 0.0, 256.0) var radiusDie=256
-export (float, 0.0, 256.0) var radiusInitSpawn=64
+export (float, 0.0, 256.0) var radiusSpawnSpread=64
+
+var outOfBoids = false
 
 func randVec(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), rand_range(-l,l))
@@ -47,19 +49,31 @@ func addBoid(position=randVec(40), type=randi()%2, rotation=randVecNoZ(PI)):
     add_child(boid)
 
 func tryRespawnBoid(num=1, pos=null):
+    if outOfBoids:
+        return num
+
+    outOfBoids=true
+    for boid in boidList:
+        if !boid.isAlive:
+            outOfBoids=false
+
+    if outOfBoids:
+        print("outOfBoids")
+        return num
+
     for boid in boidList:
         if !boid.isAlive:
             respawnBoid(boid, pos)
             num-=1
         if num == 0:
-            return
-    print("out of boids!")
+            return num
+    return num
             
 
 func respawnBoid(boid, pos=null):
     if pos == null:
         boid.translation = Vector3(rand_range(-1,1), rand_range(-1,1), rand_range(-1,1))
-        boid.translation = boid.translation.normalized()*radiusInitSpawn + player.translation
+        boid.translation = boid.translation.normalized()*radiusSpawnSpread + player.translation + Vector3(0,-radiusSpawnSpread*3,0)
     else:
         boid.translation = pos
     boid.isAlive = true
@@ -149,11 +163,14 @@ func _process(delta):
             continue
         moveBoid(boid, delta)
     mutex.unlock()
+    if imod%20:
+        tryRespawnBoid(1)
     imod+=1
 
 func killBoid(boid):
     boid.translation = boidDeadPos
     boid.hide()
+    outOfBoids=false
 
 func _physics_process(delta):
     for boid in boidList:
@@ -205,12 +222,13 @@ func updateBoids(delta):
         var dp = (boid.translation-player.translation)
         var dist = dp.length()
 
+        if dist<radiusPlayer:
+            boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*1000*avoidPlayerStrength
+
         #kill boids that are far away from player
         if dist>radiusDie:
             boid.isAlive=false
 
-        #if dist<radiusPlayer:
-        #    boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*100*avoidPlayerStrength
 
         #move to center
         #boid.steerTarget += -boid.translation.normalized()*1*centerStrength
