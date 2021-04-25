@@ -41,7 +41,7 @@ func reInit(_type):
     if model != null:
         remove_child(model)
 
-    var model = models[type%len(models)].instance()
+    model = models[type%len(models)].instance()
     var mesh = model
 
     #Use when non-uniform scale is applied to mesh.

@@ -5,8 +5,8 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-#var initNumBoid = 1000
-var initNumBoid = 400
+var initNumBoid = 1000
+#var initNumBoid = 400
 var boidSpeed = 5
 
 #num STARTING types
@@ -16,7 +16,7 @@ var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
 
-var framesPerUpdate = 1
+var framesPerUpdate = 10
 
 var boidDeadPos = Vector3(0,100,0)
 
@@ -25,11 +25,11 @@ onready var player = get_node("/root/Game/Player")
 var collidePreventStrength=1
 var avoidPlayerStrength=1
 var centerStrength=1
-var nearbySteerStrength=100
+var nearbySteerStrength=5
 var copyDirStrength=1
 var radiusCollide=4
 var radiusAttract=16
-var radiusPlayer=64
+var radiusPlayer=32
 var radiusSpawnSpread=64
 
 #export (float, 0.0, 2.0) var collidePreventStrength=1
@@ -159,11 +159,11 @@ func updateBoid(boid, other, delta):
             if int(boid.type) == int(other.type):
                 steerTarget += (cos(
                     (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-                )-1)*pdiff.normalized()*nearbySteerStrength*5
+                )-1)*pdiff.normalized()*nearbySteerStrength*50
             else:
                 steerTarget -= (cos(
                     (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-                )-1)*pdiff.normalized()*nearbySteerStrength*5
+                )-1)*pdiff.normalized()*nearbySteerStrength*50
 
         ##make steering equal other boid if type is equal
         if dist<radiusAttract && boid.type == other.type:
@@ -266,7 +266,7 @@ func updateBoids(delta):
 
         #move towards player
         if dist>radiusPlayer*3:
-            boid.steerTarget -= dp*1000.0*avoidPlayerStrength/dist
+            boid.steerTarget -= dp*1000000000.0*avoidPlayerStrength/dist
 
         #kill boids that are far away from player
         if dist>radiusDie:
