@@ -12,6 +12,8 @@ export var zoom_min = 6
 export var zoom_max = 50
 export var speed = 50
 
+var propspd = 0
+
 var zoom_target = -zoom_min
 
 func _ready():
@@ -55,16 +57,16 @@ func _physics_process(_delta):
 
     #if current.dot(target)>0:
     #translation += dir
-    var propspd = 0
 
+    propspd = 2 * sign(propspd)
     if dir.length()>0:
         #translation += current
         #add_force(dir * speed, Vector3())
         if current.dot(dir)>0:
             add_force(current * speed, Vector3())
-            propspd = 10
+            propspd = 15
         else:
-            add_force(-current * speed, Vector3())
+            add_force(-current * speed * 10.0/15, Vector3())
             propspd = -10
 
     $model/propeller.speedTarget = propspd
