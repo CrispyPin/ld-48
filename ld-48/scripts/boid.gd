@@ -33,24 +33,13 @@ var model = null
 
 func init(_type):
     reInit(_type)
-
     mode = MODE_STATIC
-    addRayCast(model,Vector3(0.5,0,-0.5))
-    #addRayCast(model,Vector3(0.5,0,0.5))
-    #addRayCast(model,Vector3(-0.5,0,-0.5))
-    #addRayCast(model,Vector3(-0.5,0,0.5))
 
 func reInit(_type):
     type = int(_type)
 
     if model != null:
         remove_child(model)
-
-
-
-
-    #var rng = RandomNumberGenerator.new()
-    #rng.seed=type+1
 
     var model = models[type%len(models)].instance()
     var mesh = model
@@ -76,10 +65,6 @@ func reInit(_type):
 
     mode = MODE_STATIC
     add_child(model)
-    addRayCast(model,Vector3(0.5,0,-0.5))
-    addRayCast(model,Vector3(0.5,0,0.5))
-    addRayCast(model,Vector3(-0.5,0,-0.5))
-    addRayCast(model,Vector3(-0.5,0,0.5))
 
 func addMultiRayCast(except,diff):
     #addRayCast(except,diff)
