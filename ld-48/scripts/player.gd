@@ -55,3 +55,10 @@ func handle_zoom():
         $CameraRoot/Camera.translation *= zoom_factor
     $CameraRoot/Camera.translation.z = clamp($CameraRoot/Camera.translation.z, -zoom_max, -zoom_min)
 
+
+    $RayCast.cast_to = -to_local($CameraRoot/Camera.global_transform.origin)
+    $RayCast.force_raycast_update()
+    var ray_len = to_local($RayCast.get_collision_point()).length()
+    if ray_len:
+        $CameraRoot/Camera.translation.z = clamp($CameraRoot/Camera.translation.z, -ray_len, -zoom_min)
+
