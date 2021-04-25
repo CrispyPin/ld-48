@@ -5,7 +5,7 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 300
+var initNumBoid = 200
 var boidSpeed = 5
 
 var numTypes = 2
@@ -78,6 +78,11 @@ func respawnBoid(boid, pos=null):
         boid.translation = pos
     boid.isAlive = true
     boid.show()
+
+func killBoid(boid):
+    boid.translation = boidDeadPos
+    boid.hide()
+    outOfBoids=false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -167,10 +172,6 @@ func _process(delta):
         tryRespawnBoid(1)
     imod+=1
 
-func killBoid(boid):
-    boid.translation = boidDeadPos
-    boid.hide()
-    outOfBoids=false
 
 func _physics_process(delta):
     for boid in boidList:
