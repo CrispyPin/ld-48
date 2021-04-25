@@ -3,7 +3,7 @@
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0, 0.101961, 0.313726, 1 )
 sky_horizon_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
-ground_bottom_color = Color( 0.0745098, 0.12549, 0.211765, 1 )
+ground_bottom_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
 ground_horizon_color = Color( 0.0745098, 0.121569, 0.203922, 1 )
 sun_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
 sun_latitude = -90.0
@@ -13,8 +13,8 @@ background_mode = 2
 background_sky = SubResource( 1 )
 background_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
 ambient_light_color = Color( 0.388235, 0.388235, 0.388235, 1 )
-ambient_light_energy = 7.12
-ambient_light_sky_contribution = 0.5
+ambient_light_energy = 3.0
+ambient_light_sky_contribution = 0.75
 fog_enabled = true
 fog_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
 fog_depth_begin = 16.0
