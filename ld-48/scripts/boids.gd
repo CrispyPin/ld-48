@@ -5,8 +5,9 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 1000
-var boidSpeed = 5
+#var initNumBoid = 1000
+var initNumBoid = 100
+var boidSpeed = 3
 
 var numTypes = 6
 var boidResourcePath = "res://scenes/boid.tscn"

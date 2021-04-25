@@ -40,19 +40,44 @@ func _physics_process(_delta):
     if Input.is_action_pressed("move_left"):
         dir += $CameraRoot.transform.basis.x
     if Input.is_action_pressed("move_up"):
-        dir += Vector3(0, 1, 0)
+        dir += $CameraRoot.transform.basis.y
+        #dir += Vector3(0, 1, 0)
     if Input.is_action_pressed("move_down"):
-        dir += Vector3(0,-1, 0)
+        #dir += Vector3(0,-1, 0)
+        dir -= $CameraRoot.transform.basis.y
 
     dir = dir.normalized()
-    add_force(dir*speed,Vector3())
+    #add_force(dir*speed,Vector3())
 
-    dir = dir.normalized()
-    add_force(dir * speed, Vector3())
+    var current = $model.transform.basis.z 
+    var target = dir
+    var interpolated = -current.move_toward(target,_delta*speed/40)
+
+    #if current.dot(target)>0:
+    #translation += dir
+    var propspd = 0
+
+    if dir.length()>0:
+        #translation += current
+        #add_force(dir * speed, Vector3())
+        if current.dot(dir)>0:
+            add_force(current * speed, Vector3())
+            propspd = 10
+        else:
+            add_force(-current * speed, Vector3())
+            propspd = -10
+
+    $model/propeller.speedTarget = propspd
+    $model/propeller.acceleration = speed/2
+
+    #$model.transform = $model.transform.looking_at(interpolated, Vector3(0,1,0))
+    $model.transform = $model.transform.looking_at(interpolated, Vector3(0,1,0))
+
     if linear_velocity.length() > 0:
-        var shark_rot = (-linear_velocity + -$model.transform.basis.z)/2
-        $model.transform = $model.transform.looking_at(shark_rot, Vector3(0,1,0))
-
+        pass
+        #var shark_rot = (-linear_velocity + -$model.transform.basis.z)/2
+        #$model.transform = $model.transform.looking_at(shark_rot, Vector3(0,1,0))
+        #$model.transform = $model.transform.looking_at(interpolated, Vector3(0,1,0))
 
 
 func handle_zoom():
