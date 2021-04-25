@@ -12,5 +12,7 @@
 script = ExtResource( 1 )
 models = [ ExtResource( 2 ), ExtResource( 3 ) ]
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
+[node name="CollisionShape" type="CollisionShape" parent="." groups=[
+"boids",
+]]
 shape = SubResource( 1 )

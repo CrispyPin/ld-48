@@ -23,13 +23,26 @@ export var models = [
 
 var rayCasts = []
 
+var material = null
+
+var numTypes=6.0
+
 func init(_type):
     type = _type
+
+    material = SpatialMaterial.new()
+    material.albedo_color = Color.from_hsv(type/numTypes, 1, 1) 
+
+
 
     #var rng = RandomNumberGenerator.new()
     #rng.seed=type+1
 
-    var model = models[type].instance()
+    var model = models[type%len(models)].instance()
+    var mesh = model.get_children()[0].get_children()[0]
+
+    mesh.set_surface_material(0,material)
+
     mode = MODE_STATIC
     add_child(model)
     addRayCast(model,Vector3(0.5,0,-0.5))

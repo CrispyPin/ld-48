@@ -9,5 +9,6 @@ avoidPlayerStrength = 2.0
 centerStrength = 0.3
 nearbySteerStrength = 2.0
 copyDirStrength = 2.0
-radiusCollide = 1.953
+radiusCollide = 5.209
+radiusAttract = 16.0
 radiusPlayer = 32.0

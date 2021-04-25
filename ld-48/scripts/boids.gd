@@ -5,10 +5,10 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 200
+var initNumBoid = 400
 var boidSpeed = 5
 
-var numTypes = 2
+var numTypes = 6
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
@@ -27,8 +27,9 @@ export (float, 0.0, 2.0) var copyDirStrength=1
 export (float, 0.0, 8.0) var radiusCollide=4
 export (float, 0.0, 16.0) var radiusAttract=8
 export (float, 0.0, 32.0) var radiusPlayer=16
-export (float, 0.0, 256.0) var radiusDie=512
-export (float, 1.0, 256.0) var radiusSpawnSpread=100
+#export (float, 0.0, 256.0) var radiusDie=512
+export (float, 1.0, 256.0) var radiusSpawnSpread=64
+var radiusDie=radiusSpawnSpread*6
 
 var outOfBoids = false
 
@@ -38,7 +39,7 @@ func randVec(l=1):
 func randVecNoZ(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), 0)
 
-func addBoid(position=randVec(40), type=randi()%2, rotation=randVecNoZ(PI)):
+func addBoid(position=randVec(40), type=randi()%numTypes, rotation=randVecNoZ(PI)):
     var boid = boidResource.instance()
     boid.rotation = rotation
     boid.steerTarget = getDir(boid)
@@ -133,15 +134,19 @@ func updateBoid(boid, other, delta):
             steerTarget += 5*(distFactor/dist/dist-(1/radiusCollide/radiusCollide))*pdiff.normalized()*collidePreventStrength
 
         ##steer towards nearby boid if type is equal
-        elif dist<radiusAttract && boid.type == other.type:
-            steerTarget -= (cos(
-                (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-            )-1)*pdiff.normalized()*nearbySteerStrength
-
+        elif dist<radiusAttract:
+            if boid.type == other.type:
+                steerTarget += (cos(
+                    (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
+                )-1)*pdiff.normalized()*nearbySteerStrength*5
+            else:
+                steerTarget -= (cos(
+                    (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
+                )-1)*pdiff.normalized()*nearbySteerStrength*5
 
         ##make steering equal other boid if type is equal
         if dist<radiusAttract && boid.type == other.type:
-            steerTarget += getDir(other)*copyDirStrength
+            steerTarget += getDir(other)*copyDirStrength*10
 
         boid.steerTarget+=steerTarget
 
@@ -160,11 +165,11 @@ func moveBoid(boid, delta):
     var current = getDir(boid)
     var target = boid.oldSteerTarget.normalized()
     var interpolated = current.move_toward(target, delta*2)
-
-    if boid.oldClosestPD!=null:
-        boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
-    else:
-        boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,0,1))
+    
+    #var up = target
+    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), delta/8.0)
+    #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
+    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
 
 
 var imod = 0
@@ -186,6 +191,7 @@ func _process(delta):
 
 
 func _physics_process(delta):
+    return
     for boid in boidList:
         if !boid.isAlive:
             continue
@@ -231,8 +237,12 @@ func updateBoids(delta):
         var dp = (boid.translation-player.translation)
         var dist = dp.length()
 
-        #if dist<radiusPlayer:
-        #    boid.steerTarget += dp*(1/dist/dist-1/radiusPlayer/radiusPlayer)*1000*avoidPlayerStrength
+        if dist<radiusPlayer:
+            boid.steerTarget += dp*1000.0*avoidPlayerStrength/dist
+
+        #move towards player
+        if dist>radiusPlayer*3:
+            boid.steerTarget -= dp*100.0*avoidPlayerStrength/dist
 
         #kill boids that are far away from player
         if dist>radiusDie:
@@ -244,8 +254,8 @@ func updateBoids(delta):
 
 
         #avoid other objects
-        if boid.oldClosestPD!=null:
-            boid.steerTarget += boid.oldClosestPD.normalized()*100000000000000
+        #if boid.oldClosestPD!=null:
+        #    boid.steerTarget += boid.oldClosestPD.normalized()*30
 
     mutex.lock()
     for boid in boidList:
