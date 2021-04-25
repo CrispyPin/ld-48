@@ -31,7 +31,7 @@ func init(_type):
     type = _type
 
     material = SpatialMaterial.new()
-    material.albedo_color = Color.from_hsv(type/numTypes, 1, 1) 
+    material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5) 
 
 
 

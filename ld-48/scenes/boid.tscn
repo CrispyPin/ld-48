@@ -9,6 +9,7 @@
 [node name="Boid" type="RigidBody" groups=[
 "boids",
 ]]
+collision_layer = 2
 script = ExtResource( 1 )
 models = [ ExtResource( 2 ), ExtResource( 3 ) ]
 

@@ -5,7 +5,7 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 400
+var initNumBoid = 1000
 var boidSpeed = 5
 
 var numTypes = 6
@@ -13,7 +13,7 @@ var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
 
-var framesPerUpdate = 1
+var framesPerUpdate = 10
 
 var boidDeadPos = Vector3(0,100,0)
 
@@ -26,7 +26,7 @@ export (float, 0.0, 2.0) var nearbySteerStrength=1
 export (float, 0.0, 2.0) var copyDirStrength=1
 export (float, 0.0, 8.0) var radiusCollide=4
 export (float, 0.0, 16.0) var radiusAttract=8
-export (float, 0.0, 32.0) var radiusPlayer=16
+export (float, 0.0, 128.0) var radiusPlayer=64
 #export (float, 0.0, 256.0) var radiusDie=512
 export (float, 1.0, 256.0) var radiusSpawnSpread=64
 var radiusDie=radiusSpawnSpread*6
@@ -192,7 +192,6 @@ func _process(delta):
 
 
 func _physics_process(delta):
-    return
     for boid in boidList:
         if !boid.isAlive:
             continue
@@ -256,7 +255,7 @@ func updateBoids(delta):
 
         #avoid other objects
         #if boid.oldClosestPD!=null:
-        #    boid.steerTarget += boid.oldClosestPD.normalized()*30
+            #boid.steerTarget += boid.oldClosestPD.normalized()*3000
 
     mutex.lock()
     for boid in boidList:

@@ -5,6 +5,7 @@
 
 [node name="CaveRoot" type="Spatial"]
 script = ExtResource( 1 )
+seg_scale = 1024
 
 [node name="CaveStart" type="Spatial" parent="."]
 script = ExtResource( 2 )
