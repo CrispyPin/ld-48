@@ -9,7 +9,9 @@ var thread
 var initNumBoid = 500
 var boidSpeed = 3
 
-var numTypes = 6
+#num STARTING types
+var numTypes = 3
+
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
 var boidResource
@@ -80,6 +82,8 @@ func respawnBoid(boid, pos=null):
     boid.isAlive = true
     boid.show()
     boid.setActiveEnabled(true)
+
+    boid.reInit(player.translation.y/30.0 + randi()%3)
 
     add_child(boid)
     #print(boid.translation)

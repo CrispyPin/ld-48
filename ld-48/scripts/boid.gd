@@ -1,3 +1,4 @@
+#TODO: random
 extends RigidBody
 class_name Boid
 
@@ -17,6 +18,8 @@ var oldClosestPD = null
 
 var isAlive = true
 
+var fishShader = load("res://shaders/fish.shader")
+
 export var models = [
         preload("res://models/fish/fish-1.fbx")
         ]
@@ -25,30 +28,53 @@ var rayCasts = []
 
 var material = null
 
-var numTypes=6.0
+var numTypes=12.0
+
+var model = null
 
 func init(_type):
-    type = _type
+    reInit(_type)
 
-    material = SpatialMaterial.new()
-    material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5)
+    mode = MODE_STATIC
+    addRayCast(model,Vector3(0.5,0,-0.5))
+    #addRayCast(model,Vector3(0.5,0,0.5))
+    #addRayCast(model,Vector3(-0.5,0,-0.5))
+    #addRayCast(model,Vector3(-0.5,0,0.5))
 
+func reInit(_type):
+    type = int(_type)
 
+    if model != null:
+        remove_child(model)
+
+    
+    
 
     #var rng = RandomNumberGenerator.new()
     #rng.seed=type+1
 
-    var model = models[type%len(models)].instance()
+    model = models[type%len(models)].instance()
     var mesh = model.get_children()[0].get_children()[0]
 
+    #Use when non-uniform scale is applied to mesh.
+    #mesh.scale.x = 100*sin(type)
+    #mesh.scale.z = 100*cos(type*1.2384388923848829399588)
+
+
+    material = ShaderMaterial.new()
+    material.set_shader(fishShader)
+    #material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5)
+    if type%3==0:
+        material.set_shader_param ( "emission", Color.from_hsv(type/numTypes, 1, 1) )
+        material.set_shader_param ( "pulse", true )
+
+
+    material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
+    material.set_shader_param ( "offset", rand_range(0,100) )
+    material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
     mesh.set_surface_material(0,material)
 
-    mode = MODE_STATIC
     add_child(model)
-    addRayCast(model,Vector3(0.5,0,-0.5))
-    addRayCast(model,Vector3(0.5,0,0.5))
-    addRayCast(model,Vector3(-0.5,0,-0.5))
-    addRayCast(model,Vector3(-0.5,0,0.5))
 
 func addMultiRayCast(except,diff):
     #addRayCast(except,diff)

@@ -6,3 +6,6 @@
 shader = ExtResource( 1 )
 shader_param/color = Plane( 0, 0, 0, 1 )
 shader_param/speed = 0.5
+shader_param/emission = Color( 0, 0, 0, 1 )
+shader_param/offset = 0.0
+shader_param/pulse = false
