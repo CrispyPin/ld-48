@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/segment.gd" type="Script" id=1]
 [ext_resource path="res://models/cave_segments/seg_end_1.fbx" type="PackedScene" id=2]
 [ext_resource path="res://models/cave_segments/colliders/col_end.shape" type="Shape" id=3]
+[ext_resource path="res://scenes/bubbles.tscn" type="PackedScene" id=4]
 
 [node name="seg_end" type="StaticBody"]
 script = ExtResource( 1 )
@@ -11,3 +12,12 @@ models = [ ExtResource( 2 ) ]
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 100, 0, 0, 0, -4.37114e-06, 100, 0, -100, -4.37114e-06, 0, 0, 0 )
 shape = ExtResource( 3 )
+
+[node name="Bubbles" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -17.0669, 0 )
+
+[node name="Bubbles2" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05378, -17.0669, 1.47086 )
+
+[node name="Bubbles3" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.87156, -17.0669, 2.70302 )
