@@ -100,7 +100,7 @@ func handle_zoom():
     var target_pos = $CameraRoot.transform.xform_inv(Vector3(0,0,-zoom_target))
     var ray = space_state.intersect_ray(global_transform.origin, target_pos, [self])
     if ray:
-        print(ray)
+        #print(ray)
         var ray_len = (global_transform.origin - ray.position).length()
         $CameraRoot/Camera.translation = Vector3(0,0,1) * clamp(zoom_target, -ray_len, -zoom_min)
     else:

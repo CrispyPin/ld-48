@@ -18,7 +18,7 @@ var oldClosestPD = null
 var isAlive = true
 
 export var models = [
-        preload("res://models/fish/fish-1.fbx")
+        preload("res://models/fish/fish-1.tscn")
         ]
 
 var rayCasts = []
@@ -39,7 +39,7 @@ func init(_type):
     #rng.seed=type+1
 
     var model = models[type%len(models)].instance()
-    var mesh = model.get_children()[0].get_children()[0]
+    var mesh = model
 
     mesh.set_surface_material(0,material)
 

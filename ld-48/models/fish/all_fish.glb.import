@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/squid.glb-c6290f6797135589d2ab5445c496ae4b.scn"
+path="res://.import/all_fish.glb-cb2e46a7a0c65530a9fba59a1c7e8932.scn"
 
 [deps]
 
-source_file="res://models/squid/squid.glb"
-dest_files=[ "res://.import/squid.glb-c6290f6797135589d2ab5445c496ae4b.scn" ]
+source_file="res://models/fish/all_fish.glb"
+dest_files=[ "res://.import/all_fish.glb-cb2e46a7a0c65530a9fba59a1c7e8932.scn" ]
 
 [params]
 
