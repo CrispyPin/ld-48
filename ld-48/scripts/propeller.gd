@@ -2,7 +2,7 @@ extends MeshInstance
 
 export var speedTarget = 10
 export var acceleration = 20
-var current = 0
+export var current = 0
 
 func _process(delta):
     rotate_z(delta * current)

@@ -55,6 +55,7 @@ func _physics_process(_delta):
     var target = dir
     var interpolated = -current.move_toward(target,_delta*speed/40)
 
+
     #if current.dot(target)>0:
     #translation += dir
 
@@ -69,11 +70,17 @@ func _physics_process(_delta):
             add_force(-current * speed * 10.0/15, Vector3())
             propspd = -10
 
+    var currentUp = $model.transform.basis.y
+    #var targetUp = $model.transform.basis.x
+    var targetUp = Vector3(0,1,0)
+    var interpolatedUp = currentUp.move_toward(targetUp,_delta*speed/40)
+    #var interpolatedUp = currentUp.move_toward(targetUp,_delta*speed/80*$model/propeller.current)
+
     $model/propeller.speedTarget = propspd
     $model/propeller.acceleration = speed/2
 
     #$model.transform = $model.transform.looking_at(interpolated, Vector3(0,1,0))
-    $model.transform = $model.transform.looking_at(interpolated, Vector3(0,1,0))
+    $model.transform = $model.transform.looking_at(interpolated, interpolatedUp)
 
     if linear_velocity.length() > 0:
         pass
