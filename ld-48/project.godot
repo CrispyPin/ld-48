@@ -26,9 +26,10 @@ _global_script_class_icons={
 
 [application]
 
-config/name="ld-48"
+config/name="Shork"
+config/description="A ludum dare 48 game"
 run/main_scene="res://scenes/main.tscn"
-config/icon="res://sprites/icon.png"
+config/icon="res://shork-icon.png"
 
 [input]
 
