@@ -97,7 +97,8 @@ func respawnBoid(boid, pos=null):
 
     boid.reInit(-player.translation.y/30.0 + randi()%3)
 
-    add_child(boid)
+    if boid.get_parent() != self:
+        add_child(boid)
     #print(boid.translation)
     #boid.set_process(false)
 

@@ -1,10 +1,5 @@
 extends RigidBody
 
-export var energy_max = 100
-export var energy = 100
-export var energy_loss = 5
-export var energy_gain = 5
-
 export var sensitivity_h = 1.0
 export var sensitivity_v = 1.0
 export var zoom_factor = 1.5
@@ -27,9 +22,6 @@ func _input(event):
         angle_v = min(PI * 0.5 - $CameraRoot.rotation.x, angle_v)
         angle_v = max(PI *-0.5 - $CameraRoot.rotation.x, angle_v)
         $CameraRoot.rotate_object_local(Vector3(1,0,0), angle_v)
-
-func _process(delta):
-    energy -= energy_loss * delta
 
 func _physics_process(_delta):
     handle_zoom()
@@ -97,24 +89,8 @@ func handle_zoom():
         zoom_target *= zoom_factor
     zoom_target = clamp(zoom_target, zoom_min, zoom_max)
 
-    #var space_state = get_world().direct_space_state
-    #var target_pos = $CameraRoot.transform.xform_inv(Vector3(0,0,-zoom_target))
-    #var ray = space_state.intersect_ray(global_transform.origin, target_pos, [self])
-    #if ray:
-        #print(ray)
-    #    var ray_len = (global_transform.origin - ray.position).length()
-    #    $CameraRoot/Camera.translation = Vector3(0,0,1) * clamp(zoom_target, -ray_len, -zoom_min)
-    #else:
-    #    $CameraRoot/Camera.translation = Vector3(0,0,1) * zoom_target
     $CameraRoot/RayCast.cast_to = Vector3(0, 0, -zoom_target)
     $CameraRoot/RayCast.force_raycast_update()
     var ray_len = ($CameraRoot/RayCast.get_collision_point() - global_transform.origin).length()
     if ray_len > zoom_min:
         $CameraRoot/Camera.translation = Vector3(0, 0, -min(zoom_target, ray_len))
-
-
-
-func _on_Player_body_entered(body: Node) -> void:
-    if body.is_in_group("boids"):
-        body.isAlive = false
-        energy += energy_gain
