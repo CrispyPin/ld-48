@@ -10,9 +10,13 @@ preload("res://models/seagrass/flower-1.tscn")]
 onready var cave_root = get_node("/root/Game/CaveRoot")
 onready var seg_scale = cave_root.seg_scale
 
-func _ready() -> void:
-    if self_activate:
-        add_decor()
+#func _ready() -> void:
+#    if self_activate:
+#        add_decor()
+
+#func init():
+    #if self_activate:
+        #add_decor()
 
 func add_decor():
     var mdt = MeshDataTool.new()
@@ -38,7 +42,9 @@ func add_decor():
             #d.transform = d.transform.looking_at(normal + d.translation, up)
             var pd = translation - vert
             #if pd.dot(normal)>0:
-            d.look_at(normal + d.translation,up)
-            #d.rotate_object_local ( Vector3(1,0,0), -PI/2 )
+            #d.look_at(Vector3(),up)
+            #d.look_at(d.translation + normal,up)
+            d.look_at(translation + normal,up)
+            d.rotate_object_local ( Vector3(1,0,0), -PI/2 )
             #else:
             #    d.look_at(-normal + d.translation, up)
