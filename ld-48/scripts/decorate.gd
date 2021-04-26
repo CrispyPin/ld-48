@@ -4,7 +4,8 @@ export var self_activate = false
 
 var decor = [preload("res://models/seagrass/seagrass-1.tscn"),
 preload("res://models/seagrass/seagrass-2.tscn"),
-preload("res://models/seagrass/seagrass-3.tscn")]
+preload("res://models/seagrass/seagrass-3.tscn"),
+preload("res://models/seagrass/flower-1.tscn")]
 
 onready var cave_root = get_node("/root/Game/CaveRoot")
 onready var seg_scale = cave_root.seg_scale
@@ -24,7 +25,9 @@ func add_decor():
         var vert = mdt.get_vertex(vi)
         var normal = mdt.get_face_normal(fi)
         if randf() > 0.8:
-            var type = randi() % len(decor)
+            var type = randi() % (len(decor)-1)
+            if vert.length() > 2.3:
+                type = 3
             var d = decor[type].instance()
             add_child(d)
             d.global_transform.origin = global_transform.xform(vert)
