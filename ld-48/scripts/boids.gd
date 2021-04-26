@@ -1,5 +1,5 @@
 extends Node
-
+#TODO lag spike
 class_name Boids
 
 var mutex
@@ -28,7 +28,8 @@ onready var player = get_node("/root/Game/Player")
 #export (float, 0.0, 2.0) var collidePreventStrength=1
 var collidePreventStrength=2
 #export (float, 0.0, 2.0) var avoidPlayerStrength=1
-var avoidPlayerStrength=2
+#var avoidPlayerStrength=2
+var avoidPlayerStrength=8
 #export (float, 0.0, 2.0) var centerStrength=1
 var centerStrength=0.3
 #export (float, 0.0, 2.0) var nearbySteerStrength=1
@@ -40,7 +41,8 @@ var radiusCollide=5.209
 #export (float, 0.0, 16.0) var radiusAttract=8
 var radiusAttract=16
 #export (float, 0.0, 128.0) var radiusPlayer=64
-var radiusPlayer=32
+#var radiusPlayer=32
+var radiusPlayer=64
 #export (float, 0.0, 256.0) var radiusDie=512
 #export (float, 1.0, 256.0) var radiusSpawnSpread=64
 var radiusSpawnSpread=64
@@ -63,6 +65,10 @@ func addBoid(position=randVec(40), type=randi()%numTypes, rotation=randVecNoZ(PI
     boidList.append(boid)
 
     respawnBoid(boid, null)
+
+    #not performant, but I don't care
+    boid.isAlive = false
+    killBoid(boid)
 
 func tryRespawnBoid(num=1, pos=null):
     if outOfBoids:
@@ -95,7 +101,7 @@ func respawnBoid(boid, pos=null):
     boid.show()
     boid.setActiveEnabled(true)
 
-    boid.reInit(-player.translation.y/30.0 + randi()%3)
+    boid.reInit(-player.translation.y/300.0 + randi()%3)
 
     if boid.get_parent() != self:
         add_child(boid)
@@ -204,8 +210,24 @@ func _process(delta):
             continue
         moveBoid(boid, delta)
     mutex.unlock()
-    if imod%20:
-        tryRespawnBoid(1)
+    if imod%10:
+    
+
+        #respawn a few boids
+        tryRespawnBoid(2)
+
+        #kill a boid
+        var mostFarAwayBoid = boidList[0]
+        var mostFarAwayDist = player.translation.distance_to(mostFarAwayBoid.translation)
+        for boid in boidList:
+            var dist = player.translation.distance_to(boid.translation)
+            if dist>mostFarAwayDist:
+                mostFarAwayBoid = boid
+                mostFarAwayDist = dist
+
+        mostFarAwayBoid.isAlive = false
+
+        print(player.translation.y)
     imod+=1
 
 
@@ -259,7 +281,7 @@ func updateBoids(delta):
             boid.steerTarget += dp*1000.0*avoidPlayerStrength/dist
 
         #move towards player
-        if dist>radiusPlayer*3:
+        if dist>radiusPlayer*2:
             boid.steerTarget -= dp*100.0*avoidPlayerStrength/dist
 
         #kill boids that are far away from player
