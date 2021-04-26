@@ -16,9 +16,9 @@ func _ready() -> void:
 
     model.set_surface_material(0, load("res://shaders/cave_mat.tres"))
     if is_branch:
-        rotate_y(randf() * 60 + 150)
+        rotate_y(randf()*2 - 1)
     else:
-        model.rotate_y(randf()*360)
+        model.rotate_y(randf()*PI*2)
 
     model.add_decor()
 
