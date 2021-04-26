@@ -30,9 +30,9 @@ func _input(event):
 
 func _process(delta):
     energy -= energy_loss * delta
-    handle_zoom()
 
 func _physics_process(_delta):
+    handle_zoom()
     var dir = Vector3()
     if Input.is_action_pressed("move_forward"):
         dir += $CameraRoot.transform.basis.z
@@ -97,13 +97,21 @@ func handle_zoom():
         zoom_target *= zoom_factor
     zoom_target = clamp(zoom_target, -zoom_max, -zoom_min)
 
-
-    $RayCast.cast_to = $CameraRoot/Camera.global_transform.origin
-    if $RayCast.cast_to.length() > 0:
-        $RayCast.force_raycast_update()
-    var ray_len = to_local($RayCast.get_collision_point()).length()
-    if ray_len:
-        $CameraRoot/Camera.translation.z = clamp(zoom_target, -ray_len, -zoom_min)
+    var space_state = get_world().direct_space_state
+    var target_pos = $CameraRoot.transform.xform_inv(Vector3(0,0,-zoom_target))
+    var ray = space_state.intersect_ray(global_transform.origin, target_pos, [self])
+    if ray:
+        #print(ray)
+        var ray_len = (global_transform.origin - ray.position).length()
+        $CameraRoot/Camera.translation = Vector3(0,0,1) * clamp(zoom_target, -ray_len, -zoom_min)
+    else:
+        $CameraRoot/Camera.translation = Vector3(0,0,1) * zoom_target
+    #$RayCast.cast_to = $CameraRoot.transform.xform_inv(Vector3(0,0,-zoom_target))
+    #if $RayCast.cast_to.length() > 0:
+    #    $RayCast.force_raycast_update()
+    #var ray_len = ($RayCast.get_collision_point() - $RayCast.translation).length()
+    #if ray_len:
+    #    $CameraRoot/Camera.translation = Vector3(0,0,1)* clamp(zoom_target, -ray_len, -zoom_min)
 
 
 
