@@ -5,8 +5,8 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-var initNumBoid = 1000
-#var initNumBoid = 500
+#var initNumBoid = 1000
+var initNumBoid = 300
 var boidSpeed = 2
 
 #var turnspeed = 1
