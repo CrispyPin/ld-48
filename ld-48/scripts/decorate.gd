@@ -38,13 +38,19 @@ func add_decor():
             d.scale = Vector3(1,1,1) / 5.0
             #d.rotation = Vector3(randf(), randf(), randf())*3.14
             #d.rotation = mdt.get_vertex_normal(vi)*3.14
-            var up = Vector3(0,1,0)
+            #var up = Vector3(0,1,0)
             #d.transform = d.transform.looking_at(normal + d.translation, up)
-            var pd = translation - vert
+            #var pd = translation - vert
             #if pd.dot(normal)>0:
             #d.look_at(Vector3(),up)
             #d.look_at(d.translation + normal,up)
-            d.look_at(translation + normal,up)
-            d.rotate_object_local ( Vector3(1,0,0), -PI/2 )
+            #d.look_at(translation + normal,up)
+            #d.rotate_object_local ( Vector3(1,0,0), -PI/2 )
+            
+            var normal2 = Vector2(normal.x,normal.z)
+            d.rotate_z(normal2.angle() - PI/2)
+
+            #assume normal is normalized..
+            d.rotate_x(atan(-normal.y))
             #else:
             #    d.look_at(-normal + d.translation, up)
