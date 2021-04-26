@@ -13,3 +13,5 @@ mono_crash.*
 
 *.blend1
 builds/
+
+.orig
