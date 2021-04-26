@@ -10,7 +10,8 @@ export var sensitivity_v = 1.0
 export var zoom_factor = 1.5
 export var zoom_min = 6
 export var zoom_max = 50
-export var speed = 50
+#export var speed = 50
+export var speed = 500
 
 var propspd = 0
 
