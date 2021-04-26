@@ -43,11 +43,11 @@ func _physics_process(_delta):
     if Input.is_action_pressed("move_left"):
         dir += $CameraRoot.transform.basis.x
     if Input.is_action_pressed("move_up"):
-        dir += $CameraRoot.transform.basis.y
-        #dir += Vector3(0, 1, 0)
+        #dir += $CameraRoot.transform.basis.y
+        dir += Vector3(0, 1, 0)
     if Input.is_action_pressed("move_down"):
-        #dir += Vector3(0,-1, 0)
-        dir -= $CameraRoot.transform.basis.y
+        dir += Vector3(0,-1, 0)
+        #dir -= $CameraRoot.transform.basis.y
 
     dir = dir.normalized()
     #add_force(dir*speed,Vector3())
