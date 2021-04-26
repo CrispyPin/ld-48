@@ -28,7 +28,7 @@ var rayCasts = []
 
 var material = null
 
-var numTypes=12.0
+var numTypes=PI*PI
 
 var model = null
 

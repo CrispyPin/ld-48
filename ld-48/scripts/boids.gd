@@ -9,6 +9,9 @@ var initNumBoid = 1000
 #var initNumBoid = 500
 var boidSpeed = 2
 
+#var turnspeed = 1
+var turnspeed = 0.5
+
 #num STARTING types
 var numTypes = 6
 
@@ -179,10 +182,10 @@ func moveBoid(boid, delta):
 
     var current = getDir(boid)
     var target = boid.oldSteerTarget.normalized()
-    var interpolated = current.move_toward(target, delta*2)
+    var interpolated = current.move_toward(target, turnspeed*delta*2)
 
     #var up = target
-    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), delta/8.0)
+    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), turnspeed*delta/8.0)
     #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
     boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
 
