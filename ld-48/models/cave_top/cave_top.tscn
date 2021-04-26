@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://shaders/cave_mat.tres" type="Material" id=1]
+[ext_resource path="res://scripts/decorate.gd" type="Script" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 vertex_color_use_as_albedo = true
@@ -26,6 +27,7 @@ data = PoolVector3Array( -0.1084, -1.1809, -0.8877, -0.0301, -1.0163, -0.8957, 0
 [node name="cave_top" type="MeshInstance"]
 mesh = SubResource( 2 )
 material/0 = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="StaticBody" type="StaticBody" parent="."]
 

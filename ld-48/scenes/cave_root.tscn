@@ -10,6 +10,7 @@ script = ExtResource( 1 )
 seg_scale = 1024
 
 [node name="cave_top" parent="." instance=ExtResource( 3 )]
+self_activate = true
 
 [node name="ice_sheet" parent="cave_top" instance=ExtResource( 4 )]
 
