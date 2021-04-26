@@ -21,7 +21,7 @@ var isAlive = true
 var fishShader = load("res://shaders/fish.shader")
 
 export var models = [
-        preload("res://models/fish/fish-1.fbx")
+        preload("res://models/fish/old/fish-1.fbx")
         ]
 
 var rayCasts = []
@@ -47,14 +47,14 @@ func reInit(_type):
     if model != null:
         remove_child(model)
 
-    
-    
+
+
 
     #var rng = RandomNumberGenerator.new()
     #rng.seed=type+1
 
     model = models[type%len(models)].instance()
-    var mesh = model.get_children()[0].get_children()[0]
+    var mesh = model#.get_children()[0].get_children()[0]
 
     #Use when non-uniform scale is applied to mesh.
     #mesh.scale.x = 100*sin(type)
@@ -71,7 +71,7 @@ func reInit(_type):
 
     material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
     material.set_shader_param ( "offset", rand_range(0,100) )
-    material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
+    #material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
     mesh.set_surface_material(0,material)
 
     add_child(model)

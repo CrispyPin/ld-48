@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/fish-2.fbx-625f5eff1d6a60d0bcbdfbe6ff5a8d29.scn"
+path="res://.import/fish-1.fbx-33db7d87e1838ac93cf0091a63875571.scn"
 
 [deps]
 
-source_file="res://models/fish/fish-2.fbx"
-dest_files=[ "res://.import/fish-2.fbx-625f5eff1d6a60d0bcbdfbe6ff5a8d29.scn" ]
+source_file="res://models/fish/old/fish-1.fbx"
+dest_files=[ "res://.import/fish-1.fbx-33db7d87e1838ac93cf0091a63875571.scn" ]
 
 [params]
 
