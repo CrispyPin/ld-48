@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://models/fish/materials/fish_eyes_001.material" type="Material" id=1]
 [ext_resource path="res://models/fish/materials/fish_body_001.material" type="Material" id=2]
+[ext_resource path="res://shaders/fish_mat.tres" type="Material" id=3]
+[ext_resource path="res://shaders/fish_eyes.tres" type="Material" id=4]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "fish-1"
@@ -32,5 +34,5 @@ surfaces/1 = {
 
 [node name="fish-1" type="MeshInstance"]
 mesh = SubResource( 1 )
-material/0 = null
-material/1 = null
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )

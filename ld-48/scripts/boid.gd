@@ -52,9 +52,10 @@ func reInit(_type):
 
     #var rng = RandomNumberGenerator.new()
     #rng.seed=type+1
-
-    model = models[type%len(models)].instance()
+    var modelIndex = type%len(models)
+    model = models[modelIndex].instance()
     var mesh = model#.get_children()[0].get_children()[0]
+
 
     #Use when non-uniform scale is applied to mesh.
     #mesh.scale.x = 100*sin(type)
@@ -63,6 +64,15 @@ func reInit(_type):
 
     material = ShaderMaterial.new()
     material.set_shader(fishShader)
+
+
+    if modelIndex == 2:
+        #sqi-oct:
+        #material.set_shader_param ( "amplitude", 0.5 )
+        #material.set_shader_param ( "circular", true )
+        #material.set_shader_param ( "frontStill", true )
+        pass
+
     #material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5)
     if type%3==0 && type > 3:
         material.set_shader_param ( "emission", Color.from_hsv(type/numTypes, 1, 1) )

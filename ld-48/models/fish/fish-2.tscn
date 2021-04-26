@@ -1,9 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://models/fish/materials/fish_eyes_002.material" type="Material" id=1]
 [ext_resource path="res://models/fish/materials/fish_body_002.material" type="Material" id=2]
+[ext_resource path="res://shaders/fish_mat2.tres" type="Material" id=3]
+[ext_resource path="res://shaders/fish_eyes.tres" type="Material" id=4]
 
-[sub_resource type="ArrayMesh" id=2]
+[sub_resource type="ArrayMesh" id=1]
 resource_name = "fish-2"
 surfaces/0 = {
 "aabb": AABB( -0.581352, -0.754113, -1.07383, 1.1627, 1.43157, 3.97055 ),
@@ -32,6 +34,6 @@ surfaces/1 = {
 
 [node name="fish-2" type="MeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1 )
-mesh = SubResource( 2 )
-material/0 = null
-material/1 = null
+mesh = SubResource( 1 )
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )
