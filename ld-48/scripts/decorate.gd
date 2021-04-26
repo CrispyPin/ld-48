@@ -13,6 +13,10 @@ onready var seg_scale = cave_root.seg_scale
 func _ready() -> void:
     if self_activate:
         add_decor()
+    if randf() < 0.8:
+        var s = load("res://scenes/shark.tscn").instance()
+        s.transform.origin = global_transform.origin
+        get_node("/root/Game").add_child(s)
 
 func add_decor():
     var mdt = MeshDataTool.new()
