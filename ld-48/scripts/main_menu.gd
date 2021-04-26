@@ -3,8 +3,6 @@ extends Control
 var playing = false
 
 func _ready() -> void:
-<<<<<<< HEAD
-<<<<<<< HEAD
     pass#play()
 
 
@@ -25,42 +23,10 @@ func _process(delta: float) -> void:
     #    play()
     #if Input.is_action_just_pressed("debug_on"):
     #    debug_on()
-=======
-	pass # Replace with function body.
-
-func play():
-	if playing:
-		return
-	playing = true
-	visible = false
-	var game = load("res://scenes/game.tscn").instance()
-	get_tree().get_root().add_child(game)
-
-func _process(delta: float) -> void:
-=======
-	pass # Replace with function body.
-
-func play():
-	if playing:
-		return
-	playing = true
-	visible = false
-	var game = load("res://scenes/game.tscn").instance()
-	get_tree().get_root().add_child(game)
-
-func _process(delta: float) -> void:
->>>>>>> 90f6859b73cbfa94d21e814e875f063f0c5dfd31
-	if Input.is_action_just_pressed("move_forward"):
-		play()
-	if Input.is_action_just_pressed("debug_on"):
-		debug_on()
-<<<<<<< HEAD
->>>>>>> 90f6859b73cbfa94d21e814e875f063f0c5dfd31
-=======
->>>>>>> 90f6859b73cbfa94d21e814e875f063f0c5dfd31
+    pass # Replace with function body.
 
 func debug_on():
-	if !playing:
-		return
-	get_node("/root/Game/Player/CameraRoot/Camera").environment = preload("res://default_env.tres")
-	get_node("/root/Game/Player/CollisionShape").disabled = true
+    if !playing:
+        return
+    get_node("/root/Game/Player/CameraRoot/Camera").environment = preload("res://default_env.tres")
+    get_node("/root/Game/Player/CollisionShape").disabled = true
