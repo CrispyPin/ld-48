@@ -27,6 +27,7 @@ export var models = [
 var rayCasts = []
 
 var material = null
+var materialEyes = null
 
 var numTypes=PI*PI
 
@@ -65,6 +66,9 @@ func reInit(_type):
     material = ShaderMaterial.new()
     material.set_shader(fishShader)
 
+    materialEyes = ShaderMaterial.new()
+    materialEyes.set_shader(fishShader)
+
 
     if modelIndex == 2:
         #sqi-oct:
@@ -80,9 +84,15 @@ func reInit(_type):
 
 
     material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
-    material.set_shader_param ( "offset", rand_range(0,100) )
+    materialEyes.set_shader_param ( "color", Color(0,0,0) )
+
+    var offset = rand_range(0,100)
+    material.set_shader_param ( "offset", offset )
+    materialEyes.set_shader_param ( "offset", offset )
+
     #material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
     mesh.set_surface_material(0,material)
+    mesh.set_surface_material(1,materialEyes)
 
     add_child(model)
 
