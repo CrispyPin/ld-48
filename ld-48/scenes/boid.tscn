@@ -7,15 +7,11 @@
 
 [sub_resource type="SphereShape" id=1]
 
-[node name="Boid" type="RigidBody" groups=[
-"boids",
-]]
+[node name="Boid" type="RigidBody"]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource( 1 )
 models = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ]
 
-[node name="CollisionShape" type="CollisionShape" parent="." groups=[
-"boids",
-]]
+[node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )

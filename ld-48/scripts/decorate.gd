@@ -46,7 +46,7 @@ func add_decor():
             #d.look_at(d.translation + normal,up)
             #d.look_at(translation + normal,up)
             #d.rotate_object_local ( Vector3(1,0,0), -PI/2 )
-            
+
             var normal2 = Vector2(normal.x,normal.z)
             d.rotate_z(normal2.angle() - PI/2)
 
