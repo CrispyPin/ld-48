@@ -1,15 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/boids.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/cave_root.tscn" type="PackedScene" id=3]
-[ext_resource path="res://audio/ambient.ogg" type="AudioStream" id=4]
 
 [node name="Game" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 zoom_max = 64
-speed = 50
 
 [node name="Boids" parent="." instance=ExtResource( 1 )]
 
@@ -17,8 +15,3 @@ speed = 50
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 256, 0 )
 gen_depth = 1024
 seg_scale = 256
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
-volume_db = -5.0
-autoplay = true

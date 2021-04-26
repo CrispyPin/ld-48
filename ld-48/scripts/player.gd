@@ -45,7 +45,7 @@ func _physics_process(_delta):
 
     dir = dir.normalized()
     #if dir.is_equal_approx(Vector3()):
-        
+
     #add_force(dir*speed,Vector3())
 
     var current = $model.transform.basis.z

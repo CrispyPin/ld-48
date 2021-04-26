@@ -5,8 +5,8 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-#var initNumBoid = 1000
-var initNumBoid = 300
+var initNumBoid = 1000
+#var initNumBoid = 300
 var boidSpeed = 2
 
 #var turnspeed = 1
@@ -28,8 +28,7 @@ onready var player = get_node("/root/Game/Player")
 #export (float, 0.0, 2.0) var collidePreventStrength=1
 var collidePreventStrength=2
 #export (float, 0.0, 2.0) var avoidPlayerStrength=1
-#var avoidPlayerStrength=2
-var avoidPlayerStrength=8
+var avoidPlayerStrength=2
 #export (float, 0.0, 2.0) var centerStrength=1
 var centerStrength=0.3
 #export (float, 0.0, 2.0) var nearbySteerStrength=1
@@ -211,7 +210,7 @@ func _process(delta):
         moveBoid(boid, delta)
     mutex.unlock()
     if imod%10:
-    
+
 
         #respawn a few boids
         tryRespawnBoid(2)
