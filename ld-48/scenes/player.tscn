@@ -8,28 +8,28 @@
 [sub_resource type="SphereShape" id=1]
 radius = 4.0
 
-[sub_resource type="Curve" id=5]
+[sub_resource type="Curve" id=2]
 _data = [ Vector2( 0, 0 ), 0.0, -0.38957, 0, 0, Vector2( 0.166163, 0.988636 ), 0.0, 0.0, 0, 0, Vector2( 0.601208, 1 ), 0.148175, -0.0101656, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=6]
-curve = SubResource( 5 )
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticlesMaterial" id=4]
 emission_shape = 2
 emission_box_extents = Vector3( 50, 50, 50 )
 direction = Vector3( 0, 1, 0 )
 gravity = Vector3( 0, 1, 0 )
 damping = 0.9
 scale = 0.1
-scale_curve = SubResource( 6 )
+scale_curve = SubResource( 3 )
 hue_variation_random = 1.0
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=5]
 flags_transparent = true
 albedo_color = Color( 0.286275, 0.309804, 0.333333, 0.682353 )
 
-[sub_resource type="SphereMesh" id=4]
-material = SubResource( 3 )
+[sub_resource type="SphereMesh" id=6]
+material = SubResource( 5 )
 
 [node name="Player" type="RigidBody"]
 gravity_scale = 0.0
@@ -53,7 +53,8 @@ transform = Transform( -1, 5.01436e-08, 7.16125e-08, 0, 0.819152, -0.573576, -8.
 [node name="Camera" type="Camera" parent="CameraRoot"]
 transform = Transform( -1, -4.26326e-14, 8.74228e-08, -3.55271e-14, 1, 0, -8.74228e-08, 0, -1, 6.82121e-13, 0, -10 )
 environment = ExtResource( 3 )
-far = 1024.0
+near = 0.1
+far = 2048.0
 
 [node name="model" parent="." instance=ExtResource( 1 )]
 
@@ -78,8 +79,8 @@ amount = 8192
 lifetime = 10.0
 visibility_aabb = AABB( -25, -25, -25, 50, 50, 50 )
 local_coords = false
-process_material = SubResource( 2 )
-draw_pass_1 = SubResource( 4 )
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 6 )
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
 
