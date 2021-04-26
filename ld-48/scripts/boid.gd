@@ -21,7 +21,7 @@ var isAlive = true
 var fishShader = load("res://shaders/fish.shader")
 
 export var models = [
-        preload("res://models/fish/old/fish-1.fbx")
+        preload("res://models/fish/fish-1.tscn")
         ]
 
 var rayCasts = []
