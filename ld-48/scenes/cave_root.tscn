@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/cave_root.gd" type="Script" id=1]
 [ext_resource path="res://scripts/cave_start.gd" type="Script" id=2]
+[ext_resource path="res://models/cave_top/cave_top.tscn" type="PackedScene" id=3]
+[ext_resource path="res://models/cave_top/ice_sheet.tscn" type="PackedScene" id=4]
 
 [node name="CaveRoot" type="Spatial"]
 script = ExtResource( 1 )
 seg_scale = 1024
+
+[node name="cave_top" parent="." instance=ExtResource( 3 )]
+self_activate = true
+
+[node name="ice_sheet" parent="cave_top" instance=ExtResource( 4 )]
 
 [node name="CaveStart" type="Spatial" parent="."]
 script = ExtResource( 2 )
