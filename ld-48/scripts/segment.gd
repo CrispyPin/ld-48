@@ -29,9 +29,9 @@ func _ready() -> void:
         new_start.translation = Vector3(0, 0, -dist_x * seg_scale)
         #new_start.rotation_degrees.y = 180
         new_start.get_child(0).scale = Vector3(1,1,1) * seg_scale
-        if randf() > 0.5:
-            new_start.is_main = true
-            get_parent().is_main = false
+        #if randf() > 0.5:
+        new_start.is_main = true
+        get_parent().is_main = false
         add_child(new_start)
 
 func add_decor(model):
