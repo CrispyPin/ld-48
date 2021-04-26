@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[ext_resource path="res://shaders/fish.shader" type="Shader" id=1]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/color = Color( 0.0666667, 0.580392, 0.827451, 1 )
+shader_param/speed = 0.5
+shader_param/emission = Color( 0, 0, 0, 1 )
+shader_param/offset = 0.0
+shader_param/pulse = false
+shader_param/circular = false
+shader_param/frontStill = true
+shader_param/amplitude = 0.3

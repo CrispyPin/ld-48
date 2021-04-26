@@ -9,9 +9,9 @@ sun_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
 sun_latitude = -90.0
 
 [resource]
-background_mode = 2
+background_mode = 1
 background_sky = SubResource( 1 )
-background_color = Color( 0.0705882, 0.101961, 0.152941, 1 )
+background_color = Color( 0.0470588, 0.211765, 0.490196, 1 )
 ambient_light_color = Color( 0.388235, 0.388235, 0.388235, 1 )
 ambient_light_energy = 3.0
 ambient_light_sky_contribution = 0.75

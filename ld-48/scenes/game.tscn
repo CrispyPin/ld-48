@@ -14,6 +14,7 @@ zoom_max = 64
 
 [node name="CaveRoot" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 256, 0 )
+gen_depth = 1024
 seg_scale = 256
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
