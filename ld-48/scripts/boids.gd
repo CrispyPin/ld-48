@@ -5,12 +5,12 @@ class_name Boids
 var mutex
 var semaphore
 var thread
-#var initNumBoid = 1000
-var initNumBoid = 500
-var boidSpeed = 3
+var initNumBoid = 1000
+#var initNumBoid = 500
+var boidSpeed = 2
 
 #num STARTING types
-var numTypes = 3
+var numTypes = 6
 
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidList = []
@@ -22,16 +22,25 @@ var boidDeadPos = Vector3(0,100,0)
 
 onready var player = get_node("/root/Game/Player")
 
-export (float, 0.0, 2.0) var collidePreventStrength=1
-export (float, 0.0, 2.0) var avoidPlayerStrength=1
-export (float, 0.0, 2.0) var centerStrength=1
-export (float, 0.0, 2.0) var nearbySteerStrength=1
-export (float, 0.0, 2.0) var copyDirStrength=1
-export (float, 0.0, 8.0) var radiusCollide=4
-export (float, 0.0, 16.0) var radiusAttract=8
-export (float, 0.0, 128.0) var radiusPlayer=64
+#export (float, 0.0, 2.0) var collidePreventStrength=1
+var collidePreventStrength=2
+#export (float, 0.0, 2.0) var avoidPlayerStrength=1
+var avoidPlayerStrength=2
+#export (float, 0.0, 2.0) var centerStrength=1
+var centerStrength=0.3
+#export (float, 0.0, 2.0) var nearbySteerStrength=1
+var nearbySteerStrength=2
+#export (float, 0.0, 2.0) var copyDirStrength=1
+var copyDirStrength=2
+#export (float, 0.0, 8.0) var radiusCollide=4
+var radiusCollide=5.209
+#export (float, 0.0, 16.0) var radiusAttract=8
+var radiusAttract=16
+#export (float, 0.0, 128.0) var radiusPlayer=64
+var radiusPlayer=32
 #export (float, 0.0, 256.0) var radiusDie=512
-export (float, 1.0, 256.0) var radiusSpawnSpread=64
+#export (float, 1.0, 256.0) var radiusSpawnSpread=64
+var radiusSpawnSpread=64
 var radiusDie=radiusSpawnSpread*6
 
 var outOfBoids = false

@@ -36,7 +36,7 @@ func init(_type):
     reInit(_type)
 
     mode = MODE_STATIC
-    addRayCast(model,Vector3(0.5,0,-0.5))
+    #addRayCast(model,Vector3(0.5,0,-0.5))
     #addRayCast(model,Vector3(0.5,0,0.5))
     #addRayCast(model,Vector3(-0.5,0,-0.5))
     #addRayCast(model,Vector3(-0.5,0,0.5))
@@ -79,7 +79,8 @@ func reInit(_type):
 func addMultiRayCast(except,diff):
     #addRayCast(except,diff)
     #addRayCast(except,diff/2)
-    addDirs(30)
+    #addDirs(30)
+    pass
 
 func addRayCast(except,diff):
     var ray = RayCast.new()
