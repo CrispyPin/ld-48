@@ -64,9 +64,9 @@ func reInit(_type):
     material = ShaderMaterial.new()
     material.set_shader(fishShader)
     #material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5)
-    if type%3==0:
+    if type%3==0 && type > 3:
         material.set_shader_param ( "emission", Color.from_hsv(type/numTypes, 1, 1) )
-        material.set_shader_param ( "pulse", true )
+        material.set_shader_param ( "pulse", !type%2 )
 
 
     material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )

@@ -92,7 +92,7 @@ func respawnBoid(boid, pos=null):
     boid.show()
     boid.setActiveEnabled(true)
 
-    boid.reInit(player.translation.y/30.0 + randi()%3)
+    boid.reInit(-player.translation.y/30.0 + randi()%3)
 
     add_child(boid)
     #print(boid.translation)
