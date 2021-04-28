@@ -109,6 +109,4 @@ far = 1024.0
 [node name="OVRController2" parent="Viewport/ARVROrigin" instance=ExtResource( 5 )]
 controller_id = 2
 
-[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
-
 [editable path="model"]

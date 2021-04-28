@@ -226,7 +226,7 @@ func _process(delta):
 
         mostFarAwayBoid.isAlive = false
 
-        print(player.translation.y)
+        #print(player.translation.y)
     imod+=1
 
 
