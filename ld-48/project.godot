@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Boids",
 "language": "GDScript",
 "path": "res://scripts/boids.gd"
+}, {
+"base": "Node",
+"class": "Optimized_Boids",
+"language": "GDScript",
+"path": "res://scripts/optimized_boids.gd"
 } ]
 _global_script_class_icons={
 "Boid": "",
-"Boids": ""
+"Boids": "",
+"Optimized_Boids": ""
 }
 
 [application]
