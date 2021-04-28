@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://models/submarine/submarine.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
-[ext_resource path="res://underwater_env.tres" type="Environment" id=3]
 [ext_resource path="res://scenes/smallBubbles.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/godot-openvr/scenes/ovr_controller.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/ARVROrigin.gd" type="Script" id=6]
 
 [sub_resource type="SphereShape" id=1]
 radius = 4.0
@@ -52,9 +53,8 @@ transform = Transform( -1, 5.01436e-08, 7.16125e-08, 0, 0.819152, -0.573576, -8.
 
 [node name="Camera" type="Camera" parent="CameraRoot"]
 transform = Transform( -1, -4.26326e-14, 8.74228e-08, -3.55271e-14, 1, 0, -8.74228e-08, 0, -1, 6.82121e-13, 0, -10 )
-environment = ExtResource( 3 )
-near = 0.1
-far = 2048.0
+current = true
+far = 1024.0
 
 [node name="RayCast" type="RayCast" parent="CameraRoot"]
 cast_to = Vector3( 0, 0, -10 )
@@ -77,6 +77,10 @@ light_energy = 2.0
 spot_range = 300.0
 spot_angle = 31.7
 
+[node name="VRPlayerPos" type="RemoteTransform" parent="model"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 1 )
+remote_path = NodePath("../../Viewport/ARVROrigin")
+
 [node name="debris" type="Particles" parent="."]
 amount = 8192
 lifetime = 10.0
@@ -84,6 +88,26 @@ visibility_aabb = AABB( -25, -25, -25, 50, 50, 50 )
 local_coords = false
 process_material = SubResource( 4 )
 draw_pass_1 = SubResource( 6 )
+
+[node name="Viewport" type="Viewport" parent="."]
+arvr = true
+size = Vector2( 100, 100 )
+render_target_update_mode = 3
+shadow_atlas_size = 4096
+shadow_atlas_quad_0 = 1
+
+[node name="ARVROrigin" type="ARVROrigin" parent="Viewport"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 1 )
+script = ExtResource( 6 )
+
+[node name="ARVRCamera" type="ARVRCamera" parent="Viewport/ARVROrigin"]
+current = true
+far = 1024.0
+
+[node name="OVRController" parent="Viewport/ARVROrigin" instance=ExtResource( 5 )]
+
+[node name="OVRController2" parent="Viewport/ARVROrigin" instance=ExtResource( 5 )]
+controller_id = 2
 
 [connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
 
