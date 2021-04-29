@@ -1,14 +1,13 @@
-#TODO: random
 extends RigidBody
 class_name Boid
 
-enum Type {T1,T2}
-
-
-
 var type = -1
+
+
+
+
 var steerTarget #dir to steer towards
-var oldSteerTarget #new dir to steer towards
+var newSteerTarget #new dir to steer towards
 
 var closestPoint = null
 var closestPD = null
@@ -16,7 +15,7 @@ var closestPD = null
 var oldClosestPoint = null
 var oldClosestPD = null
 
-var isAlive = true
+var isAlive = true # depricated, run <boids reference>.killBoid(<boid node>) instead, alt create kill function here
 
 var fishShader = load("res://shaders/fish.shader")
 
@@ -33,8 +32,9 @@ var numTypes=PI*PI
 
 var model = null
 
+# run ONCE at start
 func init(_type):
-    reInit(_type)
+    #reInit(_type)
 
     mode = MODE_STATIC
     #addRayCast(model,Vector3(0.5,0,-0.5))
@@ -42,7 +42,8 @@ func init(_type):
     #addRayCast(model,Vector3(-0.5,0,-0.5))
     #addRayCast(model,Vector3(-0.5,0,0.5))
 
-func reInit(_type):
+# run every time the type needs to change
+func updateType(_type): #TODO: SPLIT
     type = int(_type)
 
     if model != null:
@@ -142,3 +143,6 @@ func addDirs(n):
 #    for ray in rayCasts:
 #        if ray.is_colliding():
 #            print("collide")
+
+func getDir():
+	return transform.basis.z
