@@ -176,7 +176,8 @@ func updateBoid(boid, other, delta):
 
 #180 degree FOV
 func canSee(boid, other):
-	return (boid.translation - other.translation).dot(getDir(boid))<0
+    #return (boid.translation - other.translation).dot(getDir(boid))<0
+	return (other.translation - boid.translation).dot(getDir(boid))<0
 
 #move boid
 func moveBoid(boid, delta):
