@@ -3,38 +3,38 @@ class_name Optimized_Boids
 
 #TODO: move toward using spherical
 #TODO: more parameters
-var collideDist = 4#5 # radius of boid collision
-var collideStrength = 30#5 # radius of boid collision
-var attractDist = 6#8 #16 # radius of boid attraction
-var attractStrength = 5 # radius of boid-boid attraction
-var alignDist = attractDist # radius of boid dir alignment
-var alignStrength = 100 # strength of boid dir alignment
-var randomStrength = 10 #0
+var collideDist: float = 4#5 # radius of boid collision
+var collideStrength: float = 30#5 # radius of boid collision
+var attractDist: float = 6#8 #16 # radius of boid attraction
+var attractStrength: float = 5 # radius of boid-boid attraction
+var alignDist: float = attractDist # radius of boid dir alignment
+var alignStrength: float = 100 # strength of boid dir alignment
+var randomStrength: float = 10 #0
 
 # Boids 
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidResource
 var aliveBoids = [] # alive boids, active logic
 var deadBoids = [] # dead boids, no logic 
-var initNumBoids = 3000#1000#3000
-var typesPerLayer = 3#8
-var boidSpeed = 2 # forward movement speed 
-var boidTurnSpeed = 0.5 # rotational speed 
-var modFrames = 10
+var initNumBoids: int = 3000#1000#3000
+var typesPerLayer: int = 3#8
+var boidSpeed: float = 2 # forward movement speed 
+var boidTurnSpeed: float = 0.5 # rotational speed 
+var modFrames: int = 10
 
 # 3D matrix of the boids 
 var boidMatrix = null # current
 var newBoidMatrix = null # new
-var matrixRadius = 2 * attractDist # must be > 2 * max influence radius
+var matrixRadius: float = 2 * attractDist # must be > 2 * max influence radius
 # number of matrix cells in each direction
-var matrixRows = 16#32#8 # should be power of 2 for easy subdivision
+var matrixRows: int = 16#32#8 # should be power of 2 for easy subdivision
 
-var matrixLength = matrixRows * matrixRadius
+var matrixLength: float = matrixRows * matrixRadius
 
 # Player
 onready var player = get_node("/root/Game/Player")
-var playerDist = matrixRows * matrixRadius # reverse radius of player attraction
-var playerStrength = 0.1 # strength of player attraction 
+var playerDist: float = matrixRows * matrixRadius # reverse radius of player attraction
+var playerStrength: float = 0.1 # strength of player attraction 
 
 # Thread
 var matrixMutex
@@ -170,7 +170,7 @@ func updateBoid(boid, other):
 func updateBoidCommon(boid):
     boid.newSteerTarget += randVec(randomStrength) # random
     var dp = player.translation - boid.translation
-    var dist = dp.length()
+    #var dist = dp.length()
     #if dist>playerDist:
     boid.newSteerTarget += dp * playerStrength
     #TODO: do calc here
@@ -190,7 +190,7 @@ func swapClearBuffers():
 
 # Create num boids
 func createBoids(num):
-    for i in range(num):
+    for _i in range(num):
         createBoid()
 
 # Create, place, rotate boid and append it to the alive list
@@ -257,7 +257,7 @@ func _process(delta):
     moveBoids(aliveBoids, delta)
     boidListMutex.unlock()
 
-func _updateBoidThreadFunc(delta=0.1):
+func _updateBoidThreadFunc(_delta=0.1):
     if multithread:
         while true:
             frames_sem+=1
@@ -277,28 +277,28 @@ func fullBoidUpdate():
     if multithread:
     #if false:
 
-        var threads = []
+        var sliceThreads = []
         #for slice in boidMatrix:
 
-        var blockSize = 2
+        #var blockSize = 2
 
-        for i in range(len(boidMatrix)/2):
-            var thread = Thread.new()
-            thread.start(self, "updateCubes_NoIndex", [boidMatrix[i], boidMatrix[i+len(boidMatrix)/2]])
-            threads.append(thread)
-        for thread in threads:
-            thread.wait_to_finish()
+        for i in range(len(boidMatrix)/2.0):
+            var sliceThread = Thread.new()
+            sliceThread.start(self, "updateCubes_NoIndex", [boidMatrix[i], boidMatrix[i+len(boidMatrix)/2.0]])
+            sliceThreads.append(sliceThread)
+        for sliceThread in sliceThreads:
+            sliceThread.wait_to_finish()
     else:
         updateCubes_NoIndex(boidMatrix)
 
 # Called with constant delta, here is where raycast goes
 # if time%thing test raycast -> value in boid
 # this runs on a separate thread (I think...) 
-func _physics_process(delta):
+func _physics_process(_delta):
     pass
 #TODO: manual raycast
 
-func _threadMoveBoids(delta=null):
+func _threadMoveBoids(_delta=null):
     while true:
         moveSemaphore.wait()
         boidListMutex.lock()
@@ -321,34 +321,34 @@ func moveBoids(boids, delta=null):
         boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
 
 
-func moveBoidsMulti(boids, delta):
-    var length = len(boids)
-    var maxIndex = len(boids)-1
-    var boidsPerThread = 100
-    var current = 0
-
-    var threads = []
-    print(length) 
-    while true:
-        var mi = min(current, maxIndex)
-        var ma = min(current+boidsPerThread, maxIndex)
-
-        #print(mi," ",ma," ", maxIndex)
-        if current > maxIndex:
-            break
-
-        if multithread:
-            thread = Thread.new()
-            thread.start(self, "moveBoids", boids.slice(mi,ma,1,false))
-            threads.append(thread)
-        else:
-            moveBoids(boids.slice(mi,ma), delta)
-
-        current = current + boidsPerThread
-
-    if multithread:
-        for thread in threads:
-            thread.wait_to_finish()
+#func moveBoidsMulti(boids, delta):
+#    var length = len(boids)
+#    var maxIndex = len(boids)-1
+#    var boidsPerThread = 100
+#    var current = 0
+#
+#    var threads = []
+#    print(length) 
+#    while true:
+#        var mi = min(current, maxIndex)
+#        var ma = min(current+boidsPerThread, maxIndex)
+#
+#        #print(mi," ",ma," ", maxIndex)
+#        if current > maxIndex:
+#            break
+#
+#        if multithread:
+#            thread = Thread.new()
+#            thread.start(self, "moveBoids", boids.slice(mi,ma,1,false))
+#            threads.append(thread)
+#        else:
+#            moveBoids(boids.slice(mi,ma), delta)
+#
+#        current = current + boidsPerThread
+#
+#    if multithread:
+#        for thread in threads:
+#            thread.wait_to_finish()
 
 # Create empty matrix for the boids
 func createBoidMatrix(rows):
@@ -367,17 +367,17 @@ func createBoidMatrix(rows):
 
 # move boid in current direction and
 # turn towards the next target
-func moveBoid(boid, delta): # thread safe
-    boid.translation+=boid.getDir()*delta*5*boidSpeed
-
-    var current = boid.getDir()
-    var target = boid.steerTarget.normalized()
-    var interpolated = current.move_toward(target, boidTurnSpeed*delta*2)
-
-    #TODO: roll controll
-    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), boidTurnSpeed*delta/8.0)
-    #var up = Vector3(0,1,0)
-    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
+#func moveBoid(boid, delta): # thread safe
+#    boid.translation+=boid.getDir()*delta*5*boidSpeed
+#
+#    var current = boid.getDir()
+#    var target = boid.steerTarget.normalized()
+#    var interpolated = current.move_toward(target, boidTurnSpeed*delta*2)
+#
+#    #TODO: roll controll
+#    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), boidTurnSpeed*delta/8.0)
+#    #var up = Vector3(0,1,0)
+#    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
 
 
 

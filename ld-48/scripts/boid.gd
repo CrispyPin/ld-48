@@ -99,13 +99,13 @@ func updateType(_type): #TODO: SPLIT
 
     add_child(model)
 
-func addMultiRayCast(except,diff):
-    #addRayCast(except,diff)
-    #addRayCast(except,diff/2)
-    #addDirs(30)
-    pass
+#func addMultiRayCast(except,diff):
+#    #addRayCast(except,diff)
+#    #addRayCast(except,diff/2)
+#    #addDirs(30)
+#    pass
 
-func addRayCast(except,diff):
+func addRayCast(_except,diff):
     var ray = RayCast.new()
     ray.cast_to = Vector3(0,-1,0) + diff
     ray.cast_to = ray.cast_to.normalized()
@@ -120,26 +120,26 @@ func addRayCast(except,diff):
     rayCasts.append(ray)
 
 
-func _ready():
-    pass
+#func _ready():
+#    pass
 
-func setActiveEnabled(b):
-    for ray in rayCasts:
-        ray.enabled = b
-
-func addDirs(n):
-    var goldenRatio = (1 + sqrt (5)) / 2
-    var angleIncrement = PI * 2 * goldenRatio
-    for i in range(0,n):
-        var t = i / n
-        var inclination = acos (1 - 2 * t)
-        var azimuth = angleIncrement * i
-
-        var x = sin (inclination) * cos (azimuth)
-        var y = sin (inclination) * sin (azimuth)
-        var z = cos (inclination)
-
-        addRayCast(null,Vector3(x,y,z))
+#func setActiveEnabled(b):
+#    for ray in rayCasts:
+#        ray.enabled = b
+#
+#func addDirs(n):
+#    var goldenRatio = (1 + sqrt (5)) / 2
+#    var angleIncrement = PI * 2 * goldenRatio
+#    for i in range(0,n):
+#        var t = i / n
+#        var inclination = acos (1 - 2 * t)
+#        var azimuth = angleIncrement * i
+#
+#        var x = sin (inclination) * cos (azimuth)
+#        var y = sin (inclination) * sin (azimuth)
+#        var z = cos (inclination)
+#
+#        addRayCast(null,Vector3(x,y,z))
 
 #func _process(delta):
 #    for ray in rayCasts:
