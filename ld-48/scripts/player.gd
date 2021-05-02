@@ -38,19 +38,9 @@ func _input(event):
 func _physics_process(delta):
     handle_zoom()
 
+    move_vr(delta)
     ## VR controls:
-    #if Input.is_action_pressed("vr_forward"):
-    #    dir += $model.transform.basis.z
-    #if Input.is_action_pressed("vr_back"):
-    #    dir -= $model.transform.basis.z
-    #if Input.is_action_pressed("vr_left"):
-    #    dir += $model.transform.basis.x
-    #if Input.is_action_pressed("vr_right"):
-    #    dir -= $model.transform.basis.x
-    #if Input.is_action_pressed("vr_up"):
-    #    dir += $model.transform.basis.y
-    #if Input.is_action_pressed("vr_down"):
-    #    dir -= $model.transform.basis.y
+
 
     if first_person:
         move_fp(delta)
@@ -77,6 +67,26 @@ func move_fp(delta):
     var new_facing = -facing.move_toward(dir, delta*speed/40)
     $model.transform = $model.transform.looking_at(new_facing, Vector3(0,1,0))
 
+func move_vr(delta):
+    var dir = Vector3()
+    if Input.is_action_pressed("vr_forward"):
+        dir += $model.transform.basis.z
+    if Input.is_action_pressed("vr_back"):
+        dir -= $model.transform.basis.z
+    if Input.is_action_pressed("vr_left"):
+        dir += $model.transform.basis.x
+    if Input.is_action_pressed("vr_right"):
+        dir -= $model.transform.basis.x
+    if Input.is_action_pressed("vr_up"):
+        dir += $model.transform.basis.y
+    if Input.is_action_pressed("vr_down"):
+        dir -= $model.transform.basis.y
+
+    dir = dir.normalized()
+    add_force(dir * speed, Vector3())
+    var facing = $model.transform.basis.z
+    var new_facing = -facing.move_toward(dir, delta*speed/40)
+    $model.transform = $model.transform.looking_at(new_facing, Vector3(0,1,0))
 
 func move_3p(delta):
     var dir = Vector3()
