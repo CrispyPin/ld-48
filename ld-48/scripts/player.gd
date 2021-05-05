@@ -149,3 +149,8 @@ func handle_zoom():
     $CameraRoot/Camera.visible = !first_person
     $model/FirstPerson/Camera.current = first_person
     $model/FirstPerson/Camera.visible = first_person
+
+
+func _on_LightButton_toggled(state) -> void:
+    $model/SpotLight2.visible = state
+    $model/SpotLight.visible = state

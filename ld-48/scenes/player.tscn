@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://models/submarine/submarine.glb" type="PackedScene" id=1]
 [ext_resource path="res://scripts/player.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/smallBubbles.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/godot-openvr/scenes/ovr_controller.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/ARVROrigin.gd" type="Script" id=6]
+[ext_resource path="res://scenes/VRColliderButton.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 1.3
@@ -95,6 +96,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.5 )
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
 far = 1024.0
 
+[node name="VRColliderButton" parent="model" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0.361693, 1.03476, 1.07033 )
+
 [node name="debris" type="Particles" parent="."]
 amount = 8192
 lifetime = 10.0
@@ -122,5 +126,7 @@ far = 1024.0
 
 [node name="OVRController2" parent="Viewport/ARVROrigin" instance=ExtResource( 5 )]
 controller_id = 2
+
+[connection signal="toggled" from="model/VRColliderButton" to="." method="_on_LightButton_toggled"]
 
 [editable path="model"]

@@ -132,6 +132,11 @@ vr_down={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="main"
+3d_physics/layer_2="vr"
+
 [physics]
 
 common/enable_pause_aware_picking=true
