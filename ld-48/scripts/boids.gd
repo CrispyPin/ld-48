@@ -1,13 +1,16 @@
 extends Node
-
+#TODO lag spike
 class_name Boids
 
 var mutex
 var semaphore
 var thread
 var initNumBoid = 1000
-#var initNumBoid = 400
-var boidSpeed = 5
+#var initNumBoid = 300
+var boidSpeed = 2
+
+#var turnspeed = 1
+var turnspeed = 0.5
 
 #num STARTING types
 var numTypes = 6
@@ -22,26 +25,26 @@ var boidDeadPos = Vector3(0,100,0)
 
 onready var player = get_node("/root/Game/Player")
 
-var collidePreventStrength=1
-var avoidPlayerStrength=1
-var centerStrength=1
-var nearbySteerStrength=5
-var copyDirStrength=1
-var radiusCollide=4
-var radiusAttract=16
-var radiusPlayer=32
-var radiusSpawnSpread=64
-
 #export (float, 0.0, 2.0) var collidePreventStrength=1
+var collidePreventStrength=2
 #export (float, 0.0, 2.0) var avoidPlayerStrength=1
+var avoidPlayerStrength=2
 #export (float, 0.0, 2.0) var centerStrength=1
+var centerStrength=0.3
 #export (float, 0.0, 2.0) var nearbySteerStrength=1
+var nearbySteerStrength=2
 #export (float, 0.0, 2.0) var copyDirStrength=1
+var copyDirStrength=2
 #export (float, 0.0, 8.0) var radiusCollide=4
+var radiusCollide=5.209
 #export (float, 0.0, 16.0) var radiusAttract=8
+var radiusAttract=16
 #export (float, 0.0, 128.0) var radiusPlayer=64
-#export (float, 1.0, 256.0) var radiusSpawnSpread=64
+#var radiusPlayer=32
+var radiusPlayer=64
 #export (float, 0.0, 256.0) var radiusDie=512
+#export (float, 1.0, 256.0) var radiusSpawnSpread=64
+var radiusSpawnSpread=64
 var radiusDie=radiusSpawnSpread*6
 
 var outOfBoids = false
@@ -53,7 +56,6 @@ func randVecNoZ(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), 0)
 
 func addBoid(position=randVec(40), type=randi()%numTypes, rotation=randVecNoZ(PI)):
-    mutex.lock()
     var boid = boidResource.instance()
     boid.rotation = rotation
     boid.steerTarget = getDir(boid)
@@ -62,7 +64,10 @@ func addBoid(position=randVec(40), type=randi()%numTypes, rotation=randVecNoZ(PI
     boidList.append(boid)
 
     respawnBoid(boid, null)
-    mutex.unlock()
+
+    #not performant, but I don't care
+    boid.isAlive = false
+    killBoid(boid)
 
 func tryRespawnBoid(num=1, pos=null):
     if outOfBoids:
@@ -95,10 +100,10 @@ func respawnBoid(boid, pos=null):
     boid.show()
     boid.setActiveEnabled(true)
 
-    boid.reInit(randi()%initNumBoid)
-    #boid.reInit(-player.translation.y/30.0 + randi()%3)
+    boid.reInit(-player.translation.y/300.0 + randi()%3)
 
-    add_child(boid)
+    if boid.get_parent() != self:
+        add_child(boid)
     #print(boid.translation)
     #boid.set_process(false)
 
@@ -107,8 +112,8 @@ func killBoid(boid):
     boid.hide()
     outOfBoids=false
     boid.setActiveEnabled(false)
-    #if boid.get_parent() == self:
-    remove_child(boid)
+    if boid.get_parent() == self:
+        remove_child(boid)
     #print("boid killed")
     #boid.set_process(false)
 
@@ -150,27 +155,24 @@ func updateBoid(boid, other, delta):
 
         ##prevent collision with other boids
         if dist<radiusCollide:
-            pass
             steerTarget += 5*(distFactor/dist/dist-(1/radiusCollide/radiusCollide))*pdiff.normalized()*collidePreventStrength
 
         ##steer towards nearby boid if type is equal
         elif dist<radiusAttract:
-            #TODO:swp test
-            if int(boid.type) == int(other.type):
+            if boid.type == other.type:
                 steerTarget += (cos(
                     (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-                )-1)*pdiff.normalized()*nearbySteerStrength*50
+                )-1)*pdiff.normalized()*nearbySteerStrength*5
             else:
                 steerTarget -= (cos(
                     (dist-radiusCollide)*2*PI/(radiusAttract-radiusCollide)
-                )-1)*pdiff.normalized()*nearbySteerStrength*50
+                )-1)*pdiff.normalized()*nearbySteerStrength*5
 
         ##make steering equal other boid if type is equal
         if dist<radiusAttract && boid.type == other.type:
             steerTarget += getDir(other)*copyDirStrength*10
 
         boid.steerTarget+=steerTarget
-
 
 #180 degree FOV
 func canSee(boid, other):
@@ -186,12 +188,12 @@ func moveBoid(boid, delta):
 
     var current = getDir(boid)
     var target = boid.oldSteerTarget.normalized()
-    var interpolated = current.move_toward(target, delta*2)
+    var interpolated = current.move_toward(target, turnspeed*delta*2)
 
     #var up = target
-    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), delta/8.0)
-    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
-    #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
+    var up = boid.transform.basis.y.move_toward(Vector3(0,1,0), turnspeed*delta/8.0)
+    #boid.transform = boid.transform.looking_at(-interpolated + boid.translation, Vector3(0,1,0))
+    boid.transform = boid.transform.looking_at(-interpolated + boid.translation, up)
 
 
 var imod = 0
@@ -205,17 +207,30 @@ func _process(delta):
         if !boid.isAlive:
             killBoid(boid)
             continue
-
-        #boid.steerTarget = boid.steerTarget.normalized()
-        #boid.steerTarget += randVec(0.1)
         moveBoid(boid, delta)
     mutex.unlock()
-    if imod%20:
-        tryRespawnBoid(1)
+    if imod%10:
+
+
+        #respawn a few boids
+        tryRespawnBoid(2)
+
+        #kill a boid
+        var mostFarAwayBoid = boidList[0]
+        var mostFarAwayDist = player.translation.distance_to(mostFarAwayBoid.translation)
+        for boid in boidList:
+            var dist = player.translation.distance_to(boid.translation)
+            if dist>mostFarAwayDist:
+                mostFarAwayBoid = boid
+                mostFarAwayDist = dist
+
+        mostFarAwayBoid.isAlive = false
+
+        print(player.translation.y)
     imod+=1
 
+
 func _physics_process(delta):
-    return
     for boid in boidList:
         if !boid.isAlive:
             continue
@@ -265,8 +280,8 @@ func updateBoids(delta):
             boid.steerTarget += dp*1000.0*avoidPlayerStrength/dist
 
         #move towards player
-        if dist>radiusPlayer*3:
-            boid.steerTarget -= dp*1000000000.0*avoidPlayerStrength/dist
+        if dist>radiusPlayer*2:
+            boid.steerTarget -= dp*100.0*avoidPlayerStrength/dist
 
         #kill boids that are far away from player
         if dist>radiusDie:

@@ -1,3 +1,4 @@
+#TODO: random
 extends RigidBody
 class_name Boid
 
@@ -26,14 +27,20 @@ export var models = [
 var rayCasts = []
 
 var material = null
+var materialEyes = null
 
-var numTypes=12.0
+var numTypes=PI*PI
 
 var model = null
 
 func init(_type):
     reInit(_type)
+
     mode = MODE_STATIC
+    #addRayCast(model,Vector3(0.5,0,-0.5))
+    #addRayCast(model,Vector3(0.5,0,0.5))
+    #addRayCast(model,Vector3(-0.5,0,-0.5))
+    #addRayCast(model,Vector3(-0.5,0,0.5))
 
 func reInit(_type):
     type = int(_type)
@@ -41,8 +48,15 @@ func reInit(_type):
     if model != null:
         remove_child(model)
 
-    model = models[type%len(models)].instance()
-    var mesh = model
+
+
+
+    #var rng = RandomNumberGenerator.new()
+    #rng.seed=type+1
+    var modelIndex = type%len(models)
+    model = models[modelIndex].instance()
+    var mesh = model#.get_children()[0].get_children()[0]
+
 
     #Use when non-uniform scale is applied to mesh.
     #mesh.scale.x = 100*sin(type)
@@ -51,26 +65,42 @@ func reInit(_type):
 
     material = ShaderMaterial.new()
     material.set_shader(fishShader)
+
+    materialEyes = ShaderMaterial.new()
+    materialEyes.set_shader(fishShader)
+
+
+    if modelIndex == 2:
+        #sqi-oct:
+        #material.set_shader_param ( "amplitude", 0.5 )
+        #material.set_shader_param ( "circular", true )
+        #material.set_shader_param ( "frontStill", true )
+        pass
+
     #material.albedo_color = Color.from_hsv(type/numTypes, 0.5, 0.5)
-    if type%3==0:
+    if type%3==0 && type > 3:
         material.set_shader_param ( "emission", Color.from_hsv(type/numTypes, 1, 1) )
-        material.set_shader_param ( "pulse", true )
+        material.set_shader_param ( "pulse", !type%2 )
 
 
-    #material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
-    material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1)  )
-    #material.set_shader_param ( "offset", rand_range(0,100) )
+    material.set_shader_param ( "color", Color.from_hsv(type/numTypes, 1, 1) * rand_range(0.6,1) )
+    materialEyes.set_shader_param ( "color", Color(0,0,0) )
+
+    var offset = rand_range(0,100)
+    material.set_shader_param ( "offset", offset )
+    materialEyes.set_shader_param ( "offset", offset )
+
     #material.set_shader_param ( "speed", material.get_shader_param( "speed" )*rand_range(0.9,1.1) )
     mesh.set_surface_material(0,material)
+    mesh.set_surface_material(1,materialEyes)
 
-    mode = MODE_STATIC
     add_child(model)
 
 func addMultiRayCast(except,diff):
-    return
     #addRayCast(except,diff)
     #addRayCast(except,diff/2)
-    addDirs(30)
+    #addDirs(30)
+    pass
 
 func addRayCast(except,diff):
     var ray = RayCast.new()

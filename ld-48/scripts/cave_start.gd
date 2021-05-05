@@ -38,6 +38,8 @@ func add_seg():
 
     add_child(seg)
 
+    #seg.init()
+
     if type == 2:
         alive = false
 

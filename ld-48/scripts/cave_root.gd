@@ -9,3 +9,6 @@ export var dist_x = 4
 export var segments = [preload("res://scenes/cave_segments/seg_branch.tscn"),
                         preload("res://scenes/cave_segments/seg_straight.tscn"),
                         preload("res://scenes/cave_segments/seg_end.tscn")]
+
+func _ready() -> void:
+    $cave_top.scale = Vector3(1,1,1)*seg_scale

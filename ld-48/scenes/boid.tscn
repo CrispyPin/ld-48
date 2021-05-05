@@ -1,20 +1,17 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/boid.gd" type="Script" id=1]
 [ext_resource path="res://models/fish/fish-1.tscn" type="PackedScene" id=2]
 [ext_resource path="res://models/fish/fish-2.tscn" type="PackedScene" id=3]
+[ext_resource path="res://models/fish/squid.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SphereShape" id=1]
 
-[node name="Boid" type="RigidBody" groups=[
-"boids",
-]]
+[node name="Boid" type="RigidBody"]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource( 1 )
-models = [ ExtResource( 2 ), ExtResource( 3 ) ]
+models = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ) ]
 
-[node name="CollisionShape" type="CollisionShape" parent="." groups=[
-"boids",
-]]
+[node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
