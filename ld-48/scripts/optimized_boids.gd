@@ -215,7 +215,7 @@ func respawnBoid(boid, maxDist=1000000, pos=null, type=null): # NOT thread safe
     else: 
         boid.translation = pos
     if type==null: 
-        boid.updateType(randi()%typesPerLayer + (-player.translation.y)/distPerLayer)
+        boid.updateType(randi()%typesPerLayer + (-player.translation.y/distPerLayer))
 
     boid.rotation = randVecNoZ(PI)
 
