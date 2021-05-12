@@ -40,6 +40,7 @@ func stop_game():
     if !Global.game_loaded:
         return
     Global.game_loaded = false
+    get_node("/root/Game/Boids")._exit_tree()
     get_node("/root/Game").queue_free()
     set_menu("Main")
     $Menus/SettingsMenu.update_menu()

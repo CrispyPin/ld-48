@@ -12,3 +12,4 @@ func _on_SettingsButton_pressed() -> void:
 
 func _on_ExitButton_pressed() -> void:
     UI.stop_game()
+    #get_tree().quit()

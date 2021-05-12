@@ -38,6 +38,7 @@ func set_setting(key, val):
     settings[key] = val
     if DEBUG_SETTINGS:
         print("Settings changed. ", key, ": ", val)
+    OS.window_fullscreen = settings["fullscreen"]
     save_settings()
 
 

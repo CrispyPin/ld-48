@@ -12,18 +12,18 @@ var alignStrength: float = 100 # strength of boid dir alignment
 var randomStrength: float = 10 #0
 
 
-# Boids 
+# Boids
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidResource
 var aliveBoids = [] # alive boids, active logic
-var deadBoids = [] # dead boids, no logic 
+var deadBoids = [] # dead boids, no logic
 var initNumBoids: int = 300#3000#1000#3000
 var typesPerLayer: int = 3#8
-var boidSpeed: float = 10 # forward movement speed 
-var boidTurnSpeed: float = 1 # rotational speed 
+var boidSpeed: float = 10 # forward movement speed
+var boidTurnSpeed: float = 1 # rotational speed
 var modFrames: int = 10
 
-# 3D matrix of the boids 
+# 3D matrix of the boids
 var boidMatrix = null # current
 var newBoidMatrix = null # new
 var matrixRadius: float = attractDist * 2.5 #2 # must be > 2 * max influence radius
@@ -35,7 +35,7 @@ var matrixLength: float = matrixRows * matrixRadius
 # Player
 onready var player = get_node("/root/Game/Player")
 var playerDist: float = matrixRows * matrixRadius # reverse radius of player attraction
-var playerStrength: float = 0.1 # strength of player attraction 
+var playerStrength: float = 0.1 # strength of player attraction
 
 # Spawn
 var spawnspread: float = matrixLength
@@ -209,12 +209,12 @@ func createBoid():
 
 # Place, rotate and update type of boid and append it to the alive list
 func respawnBoid(boid, maxDist=1000000, pos=null, type=null): # NOT thread safe
-    if pos==null: 
+    if pos==null:
         boid.translation = randVecSphereNegY(min(spawnspread,maxDist)) + player.translation
         pos = boid.translation
-    else: 
+    else:
         boid.translation = pos
-    if type==null: 
+    if type==null:
         boid.updateType(randi()%typesPerLayer + (-player.translation.y)/distPerLayer)
 
     boid.rotation = randVecNoZ(PI)
@@ -239,7 +239,7 @@ func killBoid(boid): # not thread safe due to scene tree
 
     boidListMutex.lock()
     if boid.get_parent() == self: # needed?
-        call_deferred("remove_child", boid) 
+        call_deferred("remove_child", boid)
 
     aliveBoids.append(boid)
     if boid in deadBoids:
@@ -253,7 +253,7 @@ func _process(delta):
     imod+=1
     if imod%modFrames==0:
         var respawnRandom = imod%(modFrames*4)==0
-        
+
         # respawn far away boids
         var furthest = aliveBoids[0]
         var furthestDist = furthest.translation.distance_to(player.translation)
@@ -287,12 +287,12 @@ func _updateBoidThreadFunc(_delta=0.1):
                 Performance.get_monitor(Performance.TIME_FPS))
             fullBoidUpdate()
             #print(Performance.get_monitor(Performance.TIME_FPS)," ",
-            #      Performance.get_monitor(Performance.TIME_PROCESS)," ", 
+            #      Performance.get_monitor(Performance.TIME_PROCESS)," ",
             #      Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS)," ",
             # " ")
 
 func fullBoidUpdate():
-    placeBoidsInMatrix(aliveBoids, newBoidMatrix) # cheap 
+    placeBoidsInMatrix(aliveBoids, newBoidMatrix) # cheap
     swapClearBuffers() # semi cheap, should be almost free, guess allocation is expensive
     #updateCubes([0, 0, 0], [matrixRows*2, matrixRows*2, matrixRows*2], boidMatrix)
     if multithread:
@@ -314,7 +314,7 @@ func fullBoidUpdate():
 
 # Called with constant delta, here is where raycast goes
 # if time%thing test raycast -> value in boid
-# this runs on a separate thread (I think...) 
+# this runs on a separate thread (I think...)
 func _physics_process(_delta):
     pass
 #TODO: manual raycast
@@ -335,7 +335,7 @@ func moveBoids(boids, delta=null):
         var boidDir: Vector3 = boid.transform.basis.z
 
         boid.translation+=boidDir*(delta*boidSpeed)
-        
+
 
         #boid.transform.basis.y = Vector3(0,1,0)
         #boid.transform.basis.z = boidDir.move_toward(boid.steerTarget.normalized(), boidTurnSpeed*delta*2)
@@ -361,7 +361,7 @@ func moveBoids(boids, delta=null):
 #    var current = 0
 #
 #    var threads = []
-#    print(length) 
+#    print(length)
 #    while true:
 #        var mi = min(current, maxIndex)
 #        var ma = min(current+boidsPerThread, maxIndex)
