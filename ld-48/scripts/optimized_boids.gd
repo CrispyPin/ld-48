@@ -11,12 +11,13 @@ var alignDist: float = attractDist # radius of boid dir alignment
 var alignStrength: float = 100 # strength of boid dir alignment
 var randomStrength: float = 10 #0
 
+
 # Boids 
 var boidResourcePath = "res://scenes/boid.tscn"
 var boidResource
 var aliveBoids = [] # alive boids, active logic
 var deadBoids = [] # dead boids, no logic 
-var initNumBoids: int = 3000#1000#3000
+var initNumBoids: int = 300#3000#1000#3000
 var typesPerLayer: int = 3#8
 var boidSpeed: float = 10 # forward movement speed 
 var boidTurnSpeed: float = 1 # rotational speed 
@@ -36,6 +37,10 @@ onready var player = get_node("/root/Game/Player")
 var playerDist: float = matrixRows * matrixRadius # reverse radius of player attraction
 var playerStrength: float = 0.1 # strength of player attraction 
 
+# Spawn
+var spawnspread: float = matrixLength
+var killRadius: float = spawnspread*2
+
 # Thread
 var matrixMutex: Mutex
 var boidListMutex: Mutex
@@ -47,7 +52,6 @@ var multithread: bool = true# use multithreading? TODO: finish implement
 
 var MOVE_BOID_NTHREADS = 2
 
-var spawnspread: float = matrixLength
 
 
 var frames_sem: float = 0.0
@@ -251,6 +255,11 @@ var imod: int = 0
 func _process(delta):
     imod+=1
     if imod%modFrames==0:
+
+        for boid in aliveBoids:
+            if boid.translation.distance_to(player.translation)>killRadius:
+                respawnBoid(boid)
+
         frames_main+=1
         _retval = semaphore.post()
         if !multithread:
