@@ -5,11 +5,11 @@ var target_dir = Vector3(0,-1,1)
 var time = 0
 
 func _ready() -> void:
-    pass
+    target_dir = Vector3(randf()*2-1, randf()*2-1, randf()*2-1).normalized()
 
 func _physics_process(delta):
     #add_force(target_dir * speed * delta, Vector3())
-    linear_velocity = target_dir*speed
+    linear_velocity = target_dir * speed
     $shark.look_at(transform.origin - linear_velocity, Vector3.UP)
     $CollisionShape.look_at(transform.origin - linear_velocity, Vector3.UP)
     #time += delta

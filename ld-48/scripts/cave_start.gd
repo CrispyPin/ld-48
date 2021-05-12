@@ -23,24 +23,22 @@ func _process(_delta):
     if ypos > player.translation.y - cave_root.gen_depth and alive:
         ypos -= cave_root.dist_y * cave_root.seg_scale
         add_seg()
-    #if numBoids != 0:
-    #    numBoids=boids.tryRespawnBoid(numBoids, translation)
 
 func add_seg():
-    var type;
-    if is_main:
-        type = randi() % 2
-    else:
-        type = randi() % 2 + 1
-
-    var seg = segments[type].instance()
+#    var type;
+#    if is_main:
+#        type = randi() % 2
+#    else:
+#        type = randi() % 2 + 1
+#
+#    var seg = segments[type].instance()
+    var seg = segments[1].instance()
     seg.translation = Vector3(0, ypos - global_transform.origin.y, 0)
 
     add_child(seg)
 
-    #seg.init()
-
-    if type == 2:
-        alive = false
+#
+#    if type == 2:
+#        alive = false
 
 
