@@ -283,8 +283,8 @@ func _updateBoidThreadFunc(_delta=0.1):
         while runThread:
             frames_sem+=1
             _retval = semaphore.wait()
-            print(frames_sem/frames_main, " ",
-                Performance.get_monitor(Performance.TIME_FPS))
+            #print(frames_sem/frames_main, " ",
+            #    Performance.get_monitor(Performance.TIME_FPS))
             fullBoidUpdate()
             #print(Performance.get_monitor(Performance.TIME_FPS)," ",
             #      Performance.get_monitor(Performance.TIME_PROCESS)," ", 
@@ -443,5 +443,7 @@ func isInMatrix(x,y,z,matrix):
 
 func _exit_tree():
     runThread = false
+    print("waiting for thread to finish")
     thread.wait_to_finish()
+    print("done waiting")
 
