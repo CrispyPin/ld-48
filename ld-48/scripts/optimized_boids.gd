@@ -17,7 +17,7 @@ var boidResourcePath = "res://scenes/boid.tscn"
 var boidResource
 var aliveBoids = [] # alive boids, active logic
 var deadBoids = [] # dead boids, no logic 
-var initNumBoids: int = 300#3000#1000#3000
+var initNumBoids: int = 3000#1000#3000#300
 var typesPerLayer: int = 3#8
 var boidSpeed: float = 10 # forward movement speed 
 var boidTurnSpeed: float = 1 # rotational speed 
