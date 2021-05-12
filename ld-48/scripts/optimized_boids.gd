@@ -47,6 +47,7 @@ var boidListMutex: Mutex
 var semaphore: Semaphore
 var moveSemaphore: Semaphore
 var thread: Thread
+var runThread: bool = true
 var moveThread: Thread
 var multithread: bool = true# use multithreading? TODO: finish implement
 
@@ -279,7 +280,7 @@ func _process(delta):
 
 func _updateBoidThreadFunc(_delta=0.1):
     if multithread:
-        while true:
+        while runThread:
             frames_sem+=1
             _retval = semaphore.wait()
             print(frames_sem/frames_main, " ",
@@ -440,5 +441,7 @@ func isInMatrix(x,y,z,matrix):
             && 0 <= z && z <= len(matrix[0][0])-1\
 
 
-
+func _exit_tree():
+    runThread = false
+    thread.wait_to_finish()
 
