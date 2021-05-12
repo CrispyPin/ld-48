@@ -26,7 +26,7 @@ var modFrames: int = 10
 # 3D matrix of the boids 
 var boidMatrix = null # current
 var newBoidMatrix = null # new
-var matrixRadius: float = 2 * attractDist # must be > 2 * max influence radius
+var matrixRadius: float = attractDist * 2.5 #2 # must be > 2 * max influence radius
 # number of matrix cells in each direction
 var matrixRows: int = 16#32#8 # should be power of 2 for easy subdivision
 
@@ -39,8 +39,8 @@ var playerStrength: float = 0.1 # strength of player attraction
 
 # Spawn
 var spawnspread: float = matrixLength
-var killRadius: float = spawnspread*2
-
+var killRadius: float = spawnspread*1.1
+var distPerLayer: float = 100
 # Thread
 var matrixMutex: Mutex
 var boidListMutex: Mutex
@@ -207,18 +207,14 @@ func createBoid():
     respawnBoid(boid)
 
 # Place, rotate and update type of boid and append it to the alive list
-func respawnBoid(boid, pos=null, type=null): # NOT thread safe
-
-    #TODO: transform, rotate, update type, set init dir
-
+func respawnBoid(boid, maxDist=1000000, pos=null, type=null): # NOT thread safe
     if pos==null: 
-        boid.translation = randVecSphere(spawnspread) + player.translation
+        boid.translation = randVecSphereNegY(min(spawnspread,maxDist)) + player.translation
         pos = boid.translation
     else: 
         boid.translation = pos
     if type==null: 
-        boid.updateType(randi()%typesPerLayer) # TODO: gen type
-        #boid.updateType(1) # TODO: gen type
+        boid.updateType(randi()%typesPerLayer + (-player.translation.y)/distPerLayer)
 
     boid.rotation = randVecNoZ(PI)
 
@@ -228,10 +224,10 @@ func respawnBoid(boid, pos=null, type=null): # NOT thread safe
     boidListMutex.lock()
 
 
-    if boid.get_parent() != self: # needed?
+    if boid.get_parent() != self: # needed if run several times
         call_deferred("add_child", boid)
-
-    aliveBoids.append(boid)
+    if not boid in aliveBoids:
+        aliveBoids.append(boid)
     if boid in deadBoids:
         deadBoids.remove(boid)
 
@@ -255,10 +251,22 @@ var imod: int = 0
 func _process(delta):
     imod+=1
     if imod%modFrames==0:
+        var respawnRandom = imod%(modFrames*4)==0
+        
+        # respawn far away boids
+        var furthest = aliveBoids[0]
+        var furthestDist = furthest.translation.distance_to(player.translation)
 
         for boid in aliveBoids:
-            if boid.translation.distance_to(player.translation)>killRadius:
+            var dist = boid.translation.distance_to(player.translation)
+            if dist>killRadius:
                 respawnBoid(boid)
+            elif respawnRandom:
+                if dist>furthestDist:
+                    furthest = boid
+                    furthestDist = dist
+        if respawnRandom:
+            respawnBoid(furthest, furthestDist*0.95)
 
         frames_main+=1
         _retval = semaphore.post()
@@ -419,6 +427,12 @@ func randVecNoZ(l=1):
 
 func randVecSphere(l=1):
     return Vector3(rand_range(-l,l), rand_range(-l,l), rand_range(-l,l)).normalized()*l
+
+
+func randVecSphereNegY(l=1):
+    var vec = randVecSphere(l)
+    vec.y = -abs(vec.y)
+    return vec
 
 func isInMatrix(x,y,z,matrix):
     return 0 <= x && x <= len(matrix)      -1\
