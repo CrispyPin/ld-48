@@ -43,7 +43,7 @@ func init():
     #addRayCast(model,Vector3(-0.5,0,0.5))
 
 # run every time the type needs to change
-func updateType(_type): #TODO: SPLIT
+func updateType(_type): #TODO: split func
     type = int(_type)
 
     if model != null:
