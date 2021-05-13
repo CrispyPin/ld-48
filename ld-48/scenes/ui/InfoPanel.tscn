@@ -20,15 +20,15 @@ __meta__ = {
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 554.0
-margin_bottom = 99.0
+margin_bottom = 329.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 546.0
-margin_bottom = 91.0
+margin_left = 12.0
+margin_top = 8.0
+margin_right = 538.0
+margin_bottom = 317.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
@@ -37,12 +37,17 @@ custom_constants/margin_bottom = 8
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 534.0
-margin_bottom = 79.0
+margin_right = 518.0
+margin_bottom = 301.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
-text = "This game template can be found at
-github.com/CrispyPin/godot-template"
+text = "Controls:
+WASD + space, shift for movement
+Scroll to zoom
+
+This game was made for Ludum Dare #48
+
+By: CrispyPin and Erikbot"
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
