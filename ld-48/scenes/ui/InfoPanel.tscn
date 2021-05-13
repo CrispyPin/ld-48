@@ -20,7 +20,7 @@ __meta__ = {
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 554.0
-margin_bottom = 329.0
+margin_bottom = 292.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -28,7 +28,7 @@ size_flags_vertical = 3
 margin_left = 12.0
 margin_top = 8.0
 margin_right = 538.0
-margin_bottom = 317.0
+margin_bottom = 280.0
 custom_constants/margin_right = 8
 custom_constants/margin_top = 8
 custom_constants/margin_left = 8
@@ -38,12 +38,13 @@ custom_constants/margin_bottom = 8
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 518.0
-margin_bottom = 301.0
+margin_bottom = 264.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 text = "Controls:
 WASD + space, shift for movement
 Scroll to zoom
+Tab to toggle lights
 
 This game was made for Ludum Dare #48
 

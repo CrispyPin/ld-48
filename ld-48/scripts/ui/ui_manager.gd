@@ -50,3 +50,4 @@ func set_menu(menu_name := "No"):
     for m in $Menus.get_children():
         m.visible = m.name == menu_name + "Menu"
     current_menu = menu_name
+    $Background.visible = !Global.game_loaded

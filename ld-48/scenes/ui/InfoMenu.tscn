@@ -29,7 +29,7 @@ __meta__ = {
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 1022.0
-margin_bottom = 276.0
+margin_bottom = 498.0
 
 [node name="Title" parent="PanelContainer/VSplitContainer" instance=ExtResource( 4 )]
 margin_right = 1020.0
@@ -46,7 +46,7 @@ margin_bottom = 56.0
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VSplitContainer"]
 margin_top = 82.0
 margin_right = 1020.0
-margin_bottom = 274.0
+margin_bottom = 496.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 4
 custom_constants/margin_left = 4
@@ -56,7 +56,7 @@ custom_constants/margin_bottom = 4
 margin_left = 4.0
 margin_top = 4.0
 margin_right = 1016.0
-margin_bottom = 188.0
+margin_bottom = 410.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -64,20 +64,19 @@ __meta__ = {
 [node name="Info" parent="PanelContainer/VSplitContainer/MarginContainer/VBoxContainer" instance=ExtResource( 5 )]
 margin_top = 0.0
 margin_right = 1012.0
-margin_bottom = 111.0
+margin_bottom = 333.0
 
 [node name="PanelContainer" parent="PanelContainer/VSplitContainer/MarginContainer/VBoxContainer/Info" index="0"]
 margin_right = 1008.0
-margin_bottom = 107.0
+margin_bottom = 329.0
 
 [node name="MarginContainer" parent="PanelContainer/VSplitContainer/MarginContainer/VBoxContainer/Info/PanelContainer" index="0"]
-margin_left = 12.0
-margin_top = 8.0
 margin_right = 992.0
-margin_bottom = 95.0
+margin_bottom = 317.0
 
 [node name="Label" parent="PanelContainer/VSplitContainer/MarginContainer/VBoxContainer/Info/PanelContainer/MarginContainer" index="0"]
 margin_right = 972.0
+margin_bottom = 301.0
 
 [node name="Back" parent="PanelContainer/VSplitContainer/MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
 anchor_left = 0.0
@@ -85,9 +84,9 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 0.0
-margin_top = 115.0
+margin_top = 337.0
 margin_right = 1012.0
-margin_bottom = 184.0
+margin_bottom = 406.0
 
 [node name="Button" parent="PanelContainer/VSplitContainer/MarginContainer/VBoxContainer/Back" index="0"]
 margin_right = 1008.0
