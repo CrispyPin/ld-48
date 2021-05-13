@@ -12,6 +12,8 @@ var propspd = 0
 
 var zoom_target = zoom_min
 
+var lights = true
+
 func _ready():
     Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -22,6 +24,16 @@ func _input(event):
         angle_v = min(PI * 0.5 - $CameraRoot.rotation.x, angle_v)
         angle_v = max(PI *-0.5 - $CameraRoot.rotation.x, angle_v)
         $CameraRoot.rotate_object_local(Vector3(1,0,0), angle_v)
+
+func _process(delta: float) -> void:
+    if Input.is_action_just_pressed("light"):
+        lights = !lights
+        $model/SpotLight.visible = lights
+        $model/SpotLight2.visible = lights
+        if lights:
+            $model.set_surface_material(2, preload("res://models/submarine/light.material"))
+        else:
+            $model.set_surface_material(2, preload("res://models/submarine/light_off.material"))
 
 func _physics_process(_delta):
     handle_zoom()

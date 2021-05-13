@@ -64,6 +64,7 @@ cast_to = Vector3( 0, 0, -10 )
 [node name="Bubbles2" parent="model" instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.0124141, -4.63806 )
 amount = 128
+visibility_aabb = AABB( -4, -4, -4, 8, 8, 8 )
 
 [node name="SpotLight" type="SpotLight" parent="model"]
 transform = Transform( 0.939693, 2.99004e-08, -0.34202, 0, -1, -8.74228e-08, -0.34202, 8.21505e-08, -0.939693, 1.26895, -0.48891, 4.61674 )
