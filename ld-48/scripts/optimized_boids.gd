@@ -67,7 +67,7 @@ func _ready():
     semaphore = Semaphore.new()
     moveSemaphore = Semaphore.new()
 
-    initNumBoids = [256, 512, 1024, 2048, 3072][Global.settings["boid_count"]]
+    initNumBoids = [256, 512, 1024, 2048, 4096][Global.settings["boid_count"]]
 
     thread=Thread.new()
     _retval = thread.start(self, "_updateBoidThreadFunc")
