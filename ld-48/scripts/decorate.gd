@@ -10,12 +10,26 @@ preload("res://models/seagrass/flower-1.tscn")]
 onready var cave_root = get_node("/root/Game/CaveRoot")
 onready var seg_scale = cave_root.seg_scale
 
+var still_exists = false
+
 func _ready() -> void:
+    var decor_holder = Spatial.new()
+    decor_holder.name = "Decor"
+    add_child(decor_holder)
     add_decor()
+    still_exists = true
     if randf() < 0.8:
         var s = load("res://scenes/shark.tscn").instance()
         s.transform.origin = global_transform.origin
         get_node("/root/Game").add_child(s)
+
+
+func _process(delta: float) -> void:
+    if global_transform.origin.y - cave_root.player.translation.y > 1024 and still_exists:
+        $Decor.queue_free()
+        still_exists = false
+#        print("Removed decor at ", global_transform.origin.y)
+
 
 func add_decor():
     var mdt = MeshDataTool.new()
@@ -35,7 +49,7 @@ func _add_decor_item(vert, normal):
 #    if vert.length() > 2.3:
 #        type = 3
     var d = decor[type].instance()
-    add_child(d)
+    $Decor.add_child(d)
     d.global_transform.origin = global_transform.xform(vert)
     d.scale = Vector3(1,1,1) / 5.0
 

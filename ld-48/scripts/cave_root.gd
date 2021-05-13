@@ -10,5 +10,7 @@ export var segments = [preload("res://scenes/cave_segments/seg_branch.tscn"),
                         preload("res://scenes/cave_segments/seg_straight.tscn"),
                         preload("res://scenes/cave_segments/seg_end.tscn")]
 
+onready var player = get_node("/root/Game/Player")
+
 func _ready() -> void:
     $cave_top.scale = Vector3(1,1,1)*seg_scale
