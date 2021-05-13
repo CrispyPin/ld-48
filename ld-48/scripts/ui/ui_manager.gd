@@ -21,9 +21,11 @@ func _process(_delta):
         if current_menu == "No":
             set_menu("Game")
             Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+            get_tree().paused = true
         elif current_menu == "Game":
             set_menu()
             Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+            get_tree().paused = false
 
 
 func start_game():
