@@ -17,7 +17,7 @@ const SETTINGS_DEF = {
         "tooltip": "Number of boids, high performance impact.",
         "type": "choice",
         "default": 1,
-        "options": ["256", "512", "1024", "2048"]
+        "options": ["256", "512", "1024", "2048", "3072"]
     }
 }
 
